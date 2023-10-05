@@ -1,11 +1,12 @@
 import axios from "axios";
+import api from "./api-config";
 
 const TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";
 
 export async function login(email: string, password: string) {
   try {
-    const response = await axios.post(
+    const response = await api.post(
       `${process.env.API_BASE_URL}/api/auth/login`,
       {
         email,
