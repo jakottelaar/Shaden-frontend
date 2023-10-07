@@ -5,6 +5,7 @@ import Link from "next/link";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string({ required_error: "Email is required" }).email(),
@@ -14,6 +15,8 @@ const loginSchema = z.object({
 type loginValidation = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -25,6 +28,7 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<loginValidation> = async (data) => {
     try {
       await login(data.email, data.password);
+      router.push("/");
     } catch (error) {}
   };
 

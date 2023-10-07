@@ -5,6 +5,7 @@ import { registration } from "@/service/auth-service";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 const registerSchema = z.object({
   username: z.string({ required_error: "Username is required" }).min(1),
@@ -17,6 +18,8 @@ const registerSchema = z.object({
 type registerValidation = z.infer<typeof registerSchema>;
 
 const RegisterForm = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -28,6 +31,7 @@ const RegisterForm = () => {
   const onSubmit = async (data: registerValidation) => {
     try {
       await registration(data.username, data.email, data.password);
+      router.push("/");
     } catch (error) {}
   };
 
