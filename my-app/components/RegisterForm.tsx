@@ -1,44 +1,70 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
-import { register } from "@/service/auth-service";
+import { registration } from "@/service/auth-service";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const registerSchema = z.object({
+  username: z.string({ required_error: "Username is required" }).min(1),
+  email: z.string({ required_error: "Email is required" }).email(),
+  password: z
+    .string()
+    .min(8, { message: "Password should be at least 8 characters" }),
+});
+
+type registerValidation = z.infer<typeof registerSchema>;
 
 const RegisterForm = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<registerValidation>({
+    resolver: zodResolver(registerSchema),
+  });
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const onSubmit = async (data: registerValidation) => {
     try {
-      await register(username, email, password);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+      await registration(data.username, data.email, data.password);
+    } catch (error) {}
+  };
 
   return (
     <form
       className="flex h-[400px] w-[600px] flex-col rounded-lg bg-primary-1000 p-6"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <label className="text-white">Username</label>
       <input
         type="text"
-        className="mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none"
-        onChange={(e) => setUsername(e.target.value)}
+        className={`mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none ${
+          errors.username
+            ? "border border-red-500 transition-all duration-500"
+            : "border border-transparent"
+        }`}
+        {...register("username")}
       />
       <label className="text-white">Email</label>
       <input
         type="email"
-        className="mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none"
-        onChange={(e) => setEmail(e.target.value)}
+        className={`mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none ${
+          errors.email
+            ? "border border-red-500 transition-all duration-500"
+            : "border border-transparent"
+        }`}
+        {...register("email")}
       />
       <label className="text-white">Password</label>
       <input
         type="password"
-        className="mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none"
-        onChange={(e) => setPassword(e.target.value)}
+        className={`mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none ${
+          errors.password
+            ? "border border-red-500 transition-all duration-500"
+            : "border border-transparent"
+        }`}
+        {...register("password")}
       />
       <button
         className="mt-6 rounded-md bg-secondary-100 py-2 text-white transition-all duration-300 hover:bg-secondary-500"
