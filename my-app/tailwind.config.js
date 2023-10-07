@@ -6,7 +6,7 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   theme: {
     container: {
       center: true,
@@ -23,12 +23,18 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          "1000": "#1C1C1C", // Darker shade
+          "700": "#242424",  // Slightly lighter
+          "500": "#2A2A2A",  // Base color
+          "300": "#303030",  // Slightly lighter
+          "100": "#363636",  // Lighter shade
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          "1000": "#410997", // Darker shade
+          "700": "#4703B1",  // Slightly lighter
+          "500": "#4D0CCB",  // Base color
+          "300": "#5306E5",  // Slightly lighter
+          "100": "#5900FF"   // Lighter shade
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
