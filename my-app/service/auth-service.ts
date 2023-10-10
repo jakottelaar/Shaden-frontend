@@ -1,6 +1,6 @@
 import api from "./api-config";
 
-const TOKEN_KEY = "accessToken";
+const ACCESS_TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";
 
 export const login = async (email: string, password: string) => {
@@ -14,9 +14,8 @@ export const login = async (email: string, password: string) => {
     );
 
     const { access_token, refresh_token } = response.data;
-    console.log(response.data);
 
-    localStorage.setItem(TOKEN_KEY, access_token);
+    localStorage.setItem(ACCESS_TOKEN_KEY, access_token);
     localStorage.setItem(REFRESH_TOKEN_KEY, refresh_token);
 
     return response;
@@ -44,10 +43,40 @@ export const registration = async (
     const { access_token, refresh_token } = response.data;
     console.log(response.data);
 
-    localStorage.setItem(TOKEN_KEY, access_token);
+    localStorage.setItem(ACCESS_TOKEN_KEY, access_token);
     localStorage.setItem(REFRESH_TOKEN_KEY, refresh_token);
   } catch (error) {
     console.error("Registration failed:", error);
     throw error;
+  }
+};
+
+export const logout = async () => {
+  try {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
+  } catch (error) {
+    console.error("Logout failed:", error);
+    throw error;
+  }
+};
+
+export const refresh = async (refreshToken: string) => {
+  try {
+    const response = await api.post(
+      `${process.env.API_BASE_URL}/api/auth/refresh`,
+      {
+        refreshToken,
+      },
+    );
+
+    const { access_token, refresh_token } = response.data;
+    localStorage.setItem(ACCESS_TOKEN_KEY, access_token);
+    localStorage.setItem(REFRESH_TOKEN_KEY, refresh_token);
+
+    return access_token;
+  } catch (error) {
+    console.error("Token refresh failed:", error);
+    return null;
   }
 };
