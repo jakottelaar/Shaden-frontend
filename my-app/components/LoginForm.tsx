@@ -1,11 +1,12 @@
 "use client";
-import React from "react";
-import { login } from "@/service/auth-service";
+import React, { useEffect } from "react";
+import { useAuth } from "@/service/context/AuthContext";
 import Link from "next/link";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const loginSchema = z.object({
   email: z.string({ required_error: "Email is required" }).email(),
@@ -16,6 +17,7 @@ type loginValidation = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const router = useRouter();
+  const { login, isAuthenticated } = useAuth();
 
   const {
     register,
@@ -27,22 +29,31 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<loginValidation> = async (data) => {
     try {
-      await login(data.email, data.password);
+      login(data.email, data.password);
       router.push("/");
     } catch (error) {}
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated, router]);
+
   return (
     <form
-      className="w-[800px] rounded-lg bg-primary-1000 shadow-2xl"
+      className="w-[800px] rounded-lg bg-primary-100 shadow-2xl"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col sm:flex-row sm:space-x-6">
         <div className="flex w-full flex-col p-4 sm:w-3/4 md:p-6">
+          <h1 className="mb-4 text-center text-2xl font-semibold text-white">
+            Log in
+          </h1>
           <label className="text-sm text-white">Email</label>
           <input
             id="email"
-            className={`mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none ${
+            className={`mb-2 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
               errors.email
                 ? "border border-red-500 transition-all duration-500"
                 : "border border-transparent"
@@ -53,7 +64,7 @@ const LoginForm = () => {
           <input
             id="password"
             type="password"
-            className={`mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none ${
+            className={`mb-2 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
               errors.password
                 ? "border border-red-500 transition-all duration-500"
                 : "border border-transparent"
@@ -79,9 +90,19 @@ const LoginForm = () => {
             </Link>
           </div>
         </div>
-        <div className="flex w-[300px] flex-col rounded-r-lg bg-primary-100 p-4 text-center">
-          <h1 className="mb-1 text-2xl text-white">Welcome back!</h1>
-          <p className="text-sm text-white">We are happy to see you again.</p>
+        <div className="flex w-[300px] flex-col justify-center rounded-r-lg bg-primary-300 p-6 text-center">
+          <Image
+            src="/lighting.png"
+            alt="Placeholder Image"
+            width={300}
+            height={200}
+          />
+          <h1 className="mb-1 mt-5 text-2xl font-semibold text-white">
+            Welcome back!
+          </h1>
+          <p className="text-sm text-neutral-300">
+            We are happy to see you again.
+          </p>
         </div>
       </div>
     </form>

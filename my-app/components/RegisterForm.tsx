@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { registration } from "@/service/auth-service";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/service/context/AuthContext";
 
 const registerSchema = z.object({
   username: z.string({ required_error: "Username is required" }).min(1),
@@ -19,6 +20,7 @@ type registerValidation = z.infer<typeof registerSchema>;
 
 const RegisterForm = () => {
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
 
   const {
     register,
@@ -35,15 +37,24 @@ const RegisterForm = () => {
     } catch (error) {}
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated, router]);
+
   return (
     <form
-      className="flex h-[400px] w-[600px] flex-col rounded-lg bg-primary-1000 p-6"
+      className="flex h-fit w-[600px] flex-col rounded-lg bg-primary-100 p-6 shadow-2xl"
       onSubmit={handleSubmit(onSubmit)}
     >
+      <h1 className="mb-4 text-center text-2xl font-semibold text-white">
+        Register
+      </h1>
       <label className="text-white">Username</label>
       <input
         type="text"
-        className={`mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none ${
+        className={`mb-4 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
           errors.username
             ? "border border-red-500 transition-all duration-500"
             : "border border-transparent"
@@ -53,7 +64,7 @@ const RegisterForm = () => {
       <label className="text-white">Email</label>
       <input
         type="email"
-        className={`mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none ${
+        className={`mb-4 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
           errors.email
             ? "border border-red-500 transition-all duration-500"
             : "border border-transparent"
@@ -63,7 +74,7 @@ const RegisterForm = () => {
       <label className="text-white">Password</label>
       <input
         type="password"
-        className={`mb-2 w-full rounded bg-primary-100 p-2 text-white outline-none ${
+        className={`mb-4 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
           errors.password
             ? "border border-red-500 transition-all duration-500"
             : "border border-transparent"
@@ -71,7 +82,7 @@ const RegisterForm = () => {
         {...register("password")}
       />
       <button
-        className="mt-6 rounded-md bg-secondary-100 py-2 text-white transition-all duration-300 hover:bg-secondary-500"
+        className="mt-4 rounded-md bg-secondary-100 py-2 text-white transition-all duration-300 hover:bg-secondary-500"
         type="submit"
       >
         Register
