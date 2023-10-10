@@ -1,6 +1,8 @@
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+import { ReactNode } from "react";
+
+const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="from-secondary-500 via-secondary-300 to-secondary-100 flex h-screen flex-col items-center justify-center bg-gradient-to-r">
+    <div className="flex h-screen flex-col items-center justify-center bg-gradient-to-r from-secondary-500 via-secondary-300 to-secondary-100">
       {children}
     </div>
   );
