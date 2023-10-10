@@ -27,7 +27,7 @@ module.exports = {
           "700": "#242424",  // Slightly lighter
           "500": "#2A2A2A",  // Base color
           "300": "#303030",  // Slightly lighter
-          "100": "#363636",  // Lighter shade
+          "100": "#313338",  // Lighter shade
         },
         secondary: {
           "1000": "#410997", // Darker shade
