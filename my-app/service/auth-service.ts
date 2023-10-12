@@ -63,11 +63,16 @@ export const logout = async () => {
 
 export const refresh = async (refreshToken: string) => {
   try {
-    const response = await api.post(
-      `${process.env.API_BASE_URL}/api/auth/refresh`,
-      {
-        refreshToken,
+    const refreshAuthHeaderConfig = {
+      headers: {
+        Authorization: `Bearer ${refreshToken}`,
       },
+    };
+
+    const response = await api.post(
+      `${process.env.API_BASE_URL}/api/auth/refresh-token`,
+      null,
+      refreshAuthHeaderConfig,
     );
 
     const { access_token, refresh_token } = response.data;
