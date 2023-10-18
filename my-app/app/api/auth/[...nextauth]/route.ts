@@ -46,6 +46,48 @@ export const authOptions: AuthOptions = {
         }
       },
     }),
+    CredentialsProvider({
+      id: "register",
+      name: "Register",
+      credentials: {
+        username: {
+          label: "Username",
+          type: "text",
+          placeholder: "Enter your username",
+        },
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "Enter your email",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Enter your password",
+        },
+      },
+      authorize: async (credentials) => {
+        try {
+          const res = await fetch(
+            `${process.env.API_BASE_URL}/api/auth/register`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(credentials),
+            },
+          );
+
+          const user = await res.json();
+          console.log("api response ", user.results);
+
+          return user.results;
+        } catch (error) {
+          return Promise.reject(new Error("Login failed"));
+        }
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user, account }) {

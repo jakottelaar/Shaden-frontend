@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { registration } from "@/service/auth-service";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const registerSchema = z.object({
   username: z.string({ required_error: "Username is required" }).min(1),
@@ -30,9 +30,24 @@ const RegisterForm = () => {
 
   const onSubmit = async (data: registerValidation) => {
     try {
-      await registration(data.username, data.email, data.password);
-      router.push("/");
-    } catch (error) {}
+      handleRegister(data.username, data.email, data.password);
+    } catch (error) {
+      throw new Error("Something went wrong");
+    }
+  };
+
+  const handleRegister = async (
+    username: string,
+    email: string,
+    password: string,
+  ) => {
+    signIn("register", {
+      username,
+      email,
+      password,
+      redirect: true,
+      callbackUrl: "/home",
+    });
   };
 
   return (
