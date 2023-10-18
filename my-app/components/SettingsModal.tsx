@@ -2,7 +2,7 @@
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
-import axios from "axios";
+import useAxios from "@/lib/hooks/useAxios";
 
 interface User {
   email: string;
@@ -12,17 +12,15 @@ interface User {
 const SettingsModal = () => {
   const [userData, setUserData] = useState({} as User | null);
   const { data: session } = useSession();
+  const axios = useAxios();
 
   useEffect(() => {
     const fetchData = async () => {
       if (session && session.user) {
         const url = `${process.env.API_BASE_URL}/api/users/profile`;
-        const headers = {
-          Authorization: `Bearer ${session.user.access_token}`,
-        };
 
         try {
-          const response = await axios.get(url, { headers });
+          const response = await axios.get(url);
 
           if (response.status === 200) {
             const data = response.data;
