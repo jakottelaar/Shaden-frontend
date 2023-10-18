@@ -1,7 +1,8 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { useEffect, useState } from "react";
-import { getUserProfile } from "@/service/user-service";
+import { signOut, useSession } from "next-auth/react";
+import axios from "axios";
 
 interface User {
   email: string;
@@ -10,14 +11,37 @@ interface User {
 
 const SettingsModal = () => {
   const [userData, setUserData] = useState({} as User | null);
+  const { data: session } = useSession();
 
   useEffect(() => {
-    const getUser = async () => {
-      const user = await getUserProfile();
-      setUserData(user);
+    const fetchData = async () => {
+      if (session && session.user) {
+        const url = `${process.env.API_BASE_URL}/api/users/profile`;
+        const headers = {
+          Authorization: `Bearer ${session.user.access_token}`,
+        };
+
+        try {
+          const response = await axios.get(url, { headers });
+
+          if (response.status === 200) {
+            const data = response.data;
+            setUserData(data.results);
+          } else {
+            console.error("Error fetching user data");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
     };
-    getUser();
-  }, []);
+
+    fetchData();
+  }, [session]);
+
+  const handleLogout = async () => {
+    signOut({ callbackUrl: "/login" });
+  };
 
   return (
     <Dialog>
@@ -62,6 +86,12 @@ const SettingsModal = () => {
               </h1>
               <h2 className="text-lg text-white">{userData?.username}</h2>
             </div>
+            <button
+              className="mt-5 rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500"
+              onClick={handleLogout}
+            >
+              logout
+            </button>
           </div>
         </div>
       </DialogContent>

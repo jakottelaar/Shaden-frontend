@@ -1,12 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
-import { useAuth } from "@/service/context/AuthContext";
 import Link from "next/link";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 
 const loginSchema = z.object({
   email: z.string({ required_error: "Email is required" }).email(),
@@ -16,9 +14,6 @@ const loginSchema = z.object({
 type loginValidation = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
-  const router = useRouter();
-  const { login, isAuthenticated } = useAuth();
-
   const {
     register,
     handleSubmit,
@@ -29,16 +24,18 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<loginValidation> = async (data) => {
     try {
-      login(data.email, data.password);
-      router.push("/");
+      handleLogin(data.email, data.password);
     } catch (error) {}
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/");
-    }
-  }, [isAuthenticated, router]);
+  const handleLogin = (email: string, password: string) => {
+    signIn("credentials", {
+      email,
+      password,
+      redirect: true,
+      callbackUrl: "/home",
+    });
+  };
 
   return (
     <form

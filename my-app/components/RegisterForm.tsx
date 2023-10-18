@@ -6,7 +6,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/service/context/AuthContext";
 
 const registerSchema = z.object({
   username: z.string({ required_error: "Username is required" }).min(1),
@@ -20,7 +19,6 @@ type registerValidation = z.infer<typeof registerSchema>;
 
 const RegisterForm = () => {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
 
   const {
     register,
@@ -36,12 +34,6 @@ const RegisterForm = () => {
       router.push("/");
     } catch (error) {}
   };
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/");
-    }
-  }, [isAuthenticated, router]);
 
   return (
     <form
