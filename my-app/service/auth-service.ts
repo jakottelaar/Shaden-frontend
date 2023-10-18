@@ -13,12 +13,7 @@ export const login = async (email: string, password: string) => {
       },
     );
 
-    const { access_token, refresh_token } = response.data;
-
-    localStorage.setItem(ACCESS_TOKEN_KEY, access_token);
-    localStorage.setItem(REFRESH_TOKEN_KEY, refresh_token);
-
-    return response;
+    return response.data.results;
   } catch (error) {
     console.error("Login failed:", error);
     throw error;

@@ -1,16 +1,10 @@
-import api from "./api-config";
+import useAxios from "@/lib/hooks/useAxios";
 
-const token = localStorage.getItem("accessToken");
-
-const AuthHeader = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
+const axios = useAxios();
 
 export const getUserProfile = async () => {
   try {
-    const response = await api.get("/api/users/profile", AuthHeader);
+    const response = await axios.get("/api/users/profile");
     return response.data;
   } catch (error) {
     console.error(error);
