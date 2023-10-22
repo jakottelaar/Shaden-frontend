@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Separator } from "./ui/separator";
+import AddFriendModal from "./AddFriendModal";
 
 const FriendsOverviewMain = () => {
   const [selectedOption, setSelectedOption] = useState("Online");
@@ -55,10 +57,9 @@ const FriendsOverviewMain = () => {
         >
           Blocked
         </button>
-        <button className="rounded-md bg-green-600 p-1 transition-all duration-300 hover:bg-green-700">
-          Add a friend
-        </button>
+        <AddFriendModal />
       </div>
+      <Separator className="my-3 bg-black" />
     </div>
   );
 };

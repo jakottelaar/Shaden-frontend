@@ -13,7 +13,7 @@ const Home = () => {
       <div>
         <DirectMessageSidebar />
       </div>
-      <div>
+      <div className="flex-grow">
         <FriendsOverviewMain />
       </div>
     </div>
