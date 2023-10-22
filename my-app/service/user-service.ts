@@ -1,11 +1,9 @@
-import useAxios from "@/lib/hooks/useAxios";
+import { AxiosInstance } from "axios";
 
-const axios = useAxios();
-
-export const getUserProfile = async () => {
+export const getUserProfile = async (axios: AxiosInstance) => {
   try {
     const response = await axios.get("/api/users/profile");
-    return response.data;
+    return response.data.results;
   } catch (error) {
     console.error(error);
   }

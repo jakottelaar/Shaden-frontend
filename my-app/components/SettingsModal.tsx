@@ -1,44 +1,12 @@
-"use client";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import { useEffect, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
-import useAxios from "@/lib/hooks/useAxios";
-
-interface User {
-  email: string;
-  username: string;
-}
+import AccountSettings from "./AccountSettings";
 
 const SettingsModal = () => {
-  const [userData, setUserData] = useState({} as User | null);
-  const { data: session } = useSession();
-  const axios = useAxios();
+  const [selectedOption, setSelectedOption] = useState("My Account");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (session && session.user) {
-        const url = `${process.env.API_BASE_URL}/api/users/profile`;
-
-        try {
-          const response = await axios.get(url);
-
-          if (response.status === 200) {
-            const data = response.data;
-            setUserData(data.results);
-          } else {
-            console.error("Error fetching user data");
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      }
-    };
-
-    fetchData();
-  }, [session]);
-
-  const handleLogout = async () => {
-    signOut({ callbackUrl: "/login" });
+  const handleOptionClick = (option: string) => {
+    setSelectedOption(option);
   };
 
   return (
@@ -67,29 +35,36 @@ const SettingsModal = () => {
 
       <DialogContent className="h-[600px] w-[800px] border-none bg-primary-300 p-0">
         <div className="flex flex-row">
-          <div className="w-1/4 rounded-l-lg bg-primary-700">
-            <div className="mx-3">
-              <h1 className="p-1 font-bold text-neutral-500">User</h1>
-              <button className="w-full rounded-sm py-2 text-start text-sm text-gray-200 transition-all duration-300 hover:bg-primary-100">
+          <div className=" w-1/4 rounded-l-lg bg-primary-700 p-2">
+            <div>
+              <h1 className="p-2 font-bold text-neutral-500">User</h1>
+              <button
+                className={`w-full rounded-sm px-2 py-1 text-start text-sm text-gray-200 transition-all duration-300 hover:bg-primary-100 ${
+                  selectedOption === "My Account"
+                    ? "bg-primary-100 text-white"
+                    : ""
+                }`}
+                onClick={() => handleOptionClick("My Account")}
+              >
                 My Account
               </button>
             </div>
-          </div>
-          <div className="mt-6 w-3/4 p-6">
-            <div className="rounded-lg bg-secondary-100 p-4 shadow-md">
-              <h1 className="text-2xl font-bold text-gray-800">Email</h1>
-              <h2 className="text-lg text-white">{userData?.email}</h2>
-              <h1 className="mt-4 text-2xl font-bold text-gray-800">
-                Username
-              </h1>
-              <h2 className="text-lg text-white">{userData?.username}</h2>
+            <div>
+              <h1 className="p-2 font-bold text-neutral-500">Application</h1>
+              <button
+                className={`w-full rounded-sm px-2 py-1 text-start text-sm text-gray-200 transition-all duration-300 hover:bg-primary-100 ${
+                  selectedOption === "Voice & Video"
+                    ? "bg-primary-100 text-white"
+                    : ""
+                }`}
+                onClick={() => handleOptionClick("Voice & Video")}
+              >
+                Voice & Video
+              </button>
             </div>
-            <button
-              className="mt-5 rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500"
-              onClick={handleLogout}
-            >
-              logout
-            </button>
+          </div>
+          <div className="w-3/4 p-4">
+            {selectedOption === "My Account" && <AccountSettings />}
           </div>
         </div>
       </DialogContent>
