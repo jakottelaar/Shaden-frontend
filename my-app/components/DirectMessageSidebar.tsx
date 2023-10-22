@@ -23,7 +23,7 @@ const DirectMessageSidebar = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="h-6 w-6"
+          className="me-2 h-6 w-6"
         >
           <path
             strokeLinecap="round"
