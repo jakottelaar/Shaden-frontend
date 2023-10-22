@@ -1,7 +1,7 @@
 "use client";
 import SettingsModal from "./SettingsModal";
 
-const ServerSideBar = () => {
+const NavigationSidebar = () => {
   return (
     <div className="flex h-screen flex-col bg-primary-1000 p-3">
       <SettingsModal />
@@ -9,4 +9,4 @@ const ServerSideBar = () => {
   );
 };
 
-export default ServerSideBar;
+export default NavigationSidebar;
