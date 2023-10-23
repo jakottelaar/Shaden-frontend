@@ -11,21 +11,23 @@ const AddFriendModal = () => {
   const handleFriendRequest = async () => {
     setResponseMessage("");
     try {
-      const response: { status: number } = await sentFriendRequest(
-        axios,
-        friendUsername,
-      );
-      console.log(response);
+      if (friendUsername !== "") {
+        const response: { status: number } = await sentFriendRequest(
+          axios,
+          friendUsername,
+        );
+        console.log(response);
 
-      const statusMessages: { [key: number]: string } = {
-        201: "Friend request sent!",
-        400: "You already sent a friend request to this user",
-        404: "User not found. Please check the username again",
-      };
+        const statusMessages: { [key: number]: string } = {
+          201: "Friend request sent!",
+          400: "You already sent a friend request to this user",
+          404: "User not found. Please check the username again",
+        };
 
-      setResponseMessage(
-        statusMessages[response.status] || "Something went wrong",
-      );
+        setResponseMessage(
+          statusMessages[response.status] || "Something went wrong",
+        );
+      }
     } catch (error) {
       console.error("Network error:", error);
       setResponseMessage("Network error: Unable to send the request");
@@ -51,7 +53,13 @@ const AddFriendModal = () => {
         <div className="flex flex-col space-y-4 p-4">
           <h1 className="text-white">Add a friend with their username</h1>
           <input
-            className="rounded-md bg-primary-100 px-2 py-1 text-white outline-none"
+            className={`rounded-md border bg-primary-100 px-2 py-1 text-white outline-none ${
+              responseMessage === "Friend request sent!"
+                ? "border-green-500"
+                : responseMessage === ""
+                ? "border-transparent"
+                : "border-red-500"
+            }`}
             onChange={(e) => setFriendUsername(e.target.value)}
           />
           <button
@@ -60,7 +68,19 @@ const AddFriendModal = () => {
           >
             Send friend request
           </button>
-          <p className={messageClass}>{responseMessage}</p>
+          <div className="text-6 h-6 overflow-hidden transition-opacity">
+            <p
+              className={`${
+                responseMessage
+                  ? responseMessage === "Friend request sent!"
+                    ? "text-green-500"
+                    : "text-red-500"
+                  : "invisible"
+              } opacity-100 transition-opacity`}
+            >
+              {responseMessage}
+            </p>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
