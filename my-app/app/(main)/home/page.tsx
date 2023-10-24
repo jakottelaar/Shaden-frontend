@@ -1,6 +1,6 @@
 "use client";
 import DirectMessageSidebar from "@/components/DirectMessageSidebar";
-import FriendsOverviewMain from "@/components/FriendsOverviewMain";
+import FriendsOverviewContainer from "@/components/FriendsOverviewContainer";
 import NavigationSidebar from "@/components/NavigationSidebar";
 import { signOut } from "next-auth/react";
 
@@ -14,7 +14,7 @@ const Home = () => {
         <DirectMessageSidebar />
       </div>
       <div className="flex-grow">
-        <FriendsOverviewMain />
+        <FriendsOverviewContainer />
       </div>
     </div>
   );

@@ -39,11 +39,6 @@ const AddFriendModal = () => {
     setResponseMessage("");
   };
 
-  const messageClass =
-    responseMessage === "Friend request sent!"
-      ? "text-green-500"
-      : "text-red-500";
-
   return (
     <Dialog onOpenChange={resetDialog}>
       <DialogTrigger className="rounded-md bg-secondary-100 p-1 transition-all duration-300 hover:bg-secondary-700">
