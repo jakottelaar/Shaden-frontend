@@ -29,3 +29,17 @@ export const getPendingFriendRequests = async (
     return error.response.data;
   }
 };
+
+export const acceptFriendRequest = async (
+  axios: AxiosInstance,
+  userId: number,
+) => {
+  try {
+    const response = await axios.patch(`/api/friends/${userId}/accept`);
+    console.log(response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error(error);
+    return error.response.data;
+  }
+};

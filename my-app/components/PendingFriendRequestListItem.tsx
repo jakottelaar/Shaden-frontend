@@ -3,6 +3,8 @@ import { Separator } from "./ui/separator";
 import { PendingFriend } from "@/types/types";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { acceptFriendRequest } from "@/service/friend-service";
+import useAxios from "@/lib/hooks/useAxios";
 
 const PendingFriendRequestListItem = ({
   request,
@@ -10,9 +12,12 @@ const PendingFriendRequestListItem = ({
   request: PendingFriend;
 }) => {
   const { toast } = useToast();
+  const axios = useAxios();
 
   const acceptIncomingFriendRequest = () => async () => {
-    console.log("Accepting friend request");
+    try {
+      acceptFriendRequest(axios, request.friendId);
+    } catch (error) {}
   };
 
   const declineIncomingFriendRequest = () => async () => {
@@ -43,7 +48,7 @@ const PendingFriendRequestListItem = ({
               </h2>
             </div>
           </div>
-          {request.requestType === "Incoming" ? (
+          {request.requestType === "INCOMING" ? (
             <div className="flex flex-row space-x-4">
               <button
                 className="group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300 hover:bg-neutral-800"
