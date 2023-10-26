@@ -43,3 +43,18 @@ export const acceptFriendRequest = async (
     return error.response.data;
   }
 };
+
+export const getAllFriends = async (
+  axios: AxiosInstance,
+): Promise<Friend[]> => {
+  try {
+    const response = await axios.get(`/api/friends/list`);
+
+    const result = response.data.results as Friend[];
+
+    return result;
+  } catch (error: any) {
+    console.error(error);
+    return error.response.data;
+  }
+};

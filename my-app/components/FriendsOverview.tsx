@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import FriendListItem from "./FriendListItem";
 import { Friend, PendingFriend } from "@/types/types";
 import PendingFriendRequestListItem from "./PendingFriendRequestListItem";
-import { getPendingFriendRequests } from "@/service/friend-service";
+import {
+  getAllFriends,
+  getPendingFriendRequests,
+} from "@/service/friend-service";
 import useAxios from "@/lib/hooks/useAxios";
 
 const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
@@ -15,7 +18,7 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
       () => Promise<Friend[] | PendingFriend[]>
     > = {
       Online: () => fetchOnlineFriends(),
-      All: () => fetchAllFriends(),
+      All: () => getAllFriends(axios),
       Pending: () => getPendingFriendRequests(axios),
       Blocked: () => fetchBlockedFriends(),
     };
@@ -40,31 +43,15 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
 
   const fetchOnlineFriends = async () => {
     return [
-      { id: 1, username: "John", status: "Online" },
-      { id: 2, username: "Jane", status: "Online" },
-    ];
-  };
-
-  const fetchAllFriends = async () => {
-    return [
-      { id: 1, username: "John", status: "Online" },
-      { id: 2, username: "Jane", status: "Online" },
-      { id: 3, username: "Jack", status: "Offline" },
-      { id: 4, username: "Jill", status: "Offline" },
-    ];
-  };
-
-  const fetchPendingRequests = async () => {
-    return [
-      { id: 1, username: "John", requestType: "Outgoing" },
-      { id: 2, username: "Jane", requestType: "Incoming" },
+      { id: 1, friendUsername: "John", status: "Online" },
+      { id: 2, friendUsername: "Jane", status: "Online" },
     ];
   };
 
   const fetchBlockedFriends = async () => {
     return [
-      { id: 1, username: "John", status: "Blocked" },
-      { id: 2, username: "Jane", status: "Blocked" },
+      { id: 1, friendUsername: "John", status: "Blocked" },
+      { id: 2, friendUsername: "Jane", status: "Blocked" },
     ];
   };
 

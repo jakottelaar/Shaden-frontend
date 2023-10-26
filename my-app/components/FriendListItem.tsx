@@ -15,11 +15,9 @@ const FriendListItem = ({ friend }: { friend: Friend }) => {
         </Avatar>
         <div className="flex flex-col">
           <h1 className="text-lg font-semibold text-white">
-            {friend.username}
+            {friend.friendUsername}
           </h1>
-          <h2 className=" text-sm text-neutral-400">
-            {friend.status || "online"}
-          </h2>
+          <h2 className=" text-sm text-neutral-400">online</h2>
         </div>
       </div>
     </div>
