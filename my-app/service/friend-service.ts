@@ -90,3 +90,14 @@ export const rejectIncomingFriendRequest = async (
     return error.response.data;
   }
 };
+
+export const removeFriend = async (axios: AxiosInstance, userId: number) => {
+  try {
+    const response = await axios.delete(`/api/friends/${userId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error(error);
+    return error.response.data;
+  }
+};
