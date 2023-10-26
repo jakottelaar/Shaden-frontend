@@ -14,6 +14,7 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
     [],
   );
   const [amountOfUsers, setAmountOfUsers] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const axios = useAxios();
 
   useEffect(() => {
@@ -61,17 +62,33 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
     setPendingFriendList(updatedList);
   };
 
+  const filteredPendingFriends = searchQuery
+    ? pendingFriendList.filter((request) =>
+        request.friendUsername
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()),
+      )
+    : pendingFriendList;
+
+  const filteredFriends = searchQuery
+    ? friendList.filter((friend) =>
+        friend.friendUsername.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
+    : friendList;
+
   return (
     <div>
       <input
         className="mt-1 w-full rounded-md bg-primary-1000 p-2 text-white outline-none"
         placeholder="Search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
       <h1 className="my-4 font-semibold text-white">
         {selectedOption} - {amountOfUsers}
       </h1>
       {selectedOption === "Pending" ? (
-        pendingFriendList.map((request) => (
+        filteredPendingFriends.map((request) => (
           <div>
             <PendingFriendRequestListItem
               key={(request as PendingFriend).requestId}
@@ -82,9 +99,9 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
         ))
       ) : (
         <div className="space-y-2">
-          {friendList.map((friend) => (
+          {filteredFriends.map((friend) => (
             <FriendListItem
-              key={(friend as Friend).id}
+              key={(friend as Friend).friendId}
               friend={friend as Friend}
             />
           ))}
