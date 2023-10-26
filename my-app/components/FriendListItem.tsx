@@ -17,7 +17,7 @@ const FriendListItem = ({ friend }: { friend: Friend }) => {
           <h1 className="text-lg font-semibold text-white">
             {friend.friendUsername}
           </h1>
-          <h2 className=" text-sm text-neutral-400">online</h2>
+          <h2 className=" text-sm text-neutral-400">Status not implemented</h2>
         </div>
       </div>
     </div>

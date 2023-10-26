@@ -9,7 +9,6 @@ import {
 import useAxios from "@/lib/hooks/useAxios";
 
 const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
-  const [list, setList] = useState<(Friend | PendingFriend)[]>([]);
   const [friendList, setFriendList] = useState<Friend[]>([]);
   const [pendingFriendList, setPendingFriendList] = useState<PendingFriend[]>(
     [],
@@ -51,11 +50,15 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   }, [selectedOption]);
 
   const onUpdatePendingRequests = (requestId: number) => {
+    console.log("onUpdatePendingRequests" + requestId);
+
     const updatedList = pendingFriendList.filter((request) => {
       return request.requestId !== requestId;
     });
 
-    setList(updatedList);
+    console.log(updatedList);
+    setAmountOfUsers(updatedList.length);
+    setPendingFriendList(updatedList);
   };
 
   return (
