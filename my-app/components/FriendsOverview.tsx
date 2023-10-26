@@ -10,6 +10,11 @@ import useAxios from "@/lib/hooks/useAxios";
 
 const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   const [list, setList] = useState<(Friend | PendingFriend)[]>([]);
+  const [friendList, setFriendList] = useState<Friend[]>([]);
+  const [pendingFriendList, setPendingFriendList] = useState<PendingFriend[]>(
+    [],
+  );
+  const [amountOfUsers, setAmountOfUsers] = useState(0);
   const axios = useAxios();
 
   useEffect(() => {
@@ -17,10 +22,8 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
       string,
       () => Promise<Friend[] | PendingFriend[]>
     > = {
-      Online: () => fetchOnlineFriends(),
       All: () => getAllFriends(axios),
       Pending: () => getPendingFriendRequests(axios),
-      Blocked: () => fetchBlockedFriends(),
     };
 
     const fetchData = async () => {
@@ -29,7 +32,13 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
           const data = await fetchFunctions[selectedOption]();
           console.log(data);
 
-          setList(data);
+          if (selectedOption === "Pending") {
+            setPendingFriendList(data as PendingFriend[]);
+            setAmountOfUsers((data as PendingFriend[]).length);
+          } else if (selectedOption === "All") {
+            setFriendList(data as Friend[]);
+            setAmountOfUsers((data as Friend[]).length);
+          }
         } else {
           console.error("Invalid selected option");
         }
@@ -41,18 +50,12 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
     fetchData();
   }, [selectedOption]);
 
-  const fetchOnlineFriends = async () => {
-    return [
-      { id: 1, friendUsername: "John", status: "Online" },
-      { id: 2, friendUsername: "Jane", status: "Online" },
-    ];
-  };
+  const onUpdatePendingRequests = (requestId: number) => {
+    const updatedList = pendingFriendList.filter((request) => {
+      return request.requestId !== requestId;
+    });
 
-  const fetchBlockedFriends = async () => {
-    return [
-      { id: 1, friendUsername: "John", status: "Blocked" },
-      { id: 2, friendUsername: "Jane", status: "Blocked" },
-    ];
+    setList(updatedList);
   };
 
   return (
@@ -62,20 +65,21 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
         placeholder="Search"
       />
       <h1 className="my-4 font-semibold text-white">
-        {selectedOption} - {list.length}
+        {selectedOption} - {amountOfUsers}
       </h1>
       {selectedOption === "Pending" ? (
-        list.map((request) => (
+        pendingFriendList.map((request) => (
           <div>
             <PendingFriendRequestListItem
               key={(request as PendingFriend).requestId}
               request={request as PendingFriend}
+              onUpdatePendingRequests={onUpdatePendingRequests}
             />
           </div>
         ))
       ) : (
         <div className="space-y-2">
-          {list.map((friend) => (
+          {friendList.map((friend) => (
             <FriendListItem
               key={(friend as Friend).id}
               friend={friend as Friend}
