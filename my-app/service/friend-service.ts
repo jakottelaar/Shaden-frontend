@@ -1,5 +1,5 @@
 import { Friend, PendingFriend } from "@/types/types";
-import { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
 
 export const sentFriendRequest = async (
   axios: AxiosInstance,
@@ -53,6 +53,20 @@ export const getAllFriends = async (
     const result = response.data.results as Friend[];
 
     return result;
+  } catch (error: any) {
+    console.error(error);
+    return error.response.data;
+  }
+};
+
+export const cancelOutgoingFriendRequest = async (
+  axios: AxiosInstance,
+  userId: number,
+) => {
+  try {
+    const response = await axios.delete(`/api/friends/${userId}/cancel`);
+    console.log(response.data);
+    return response.data;
   } catch (error: any) {
     console.error(error);
     return error.response.data;

@@ -3,7 +3,10 @@ import { Separator } from "./ui/separator";
 import { PendingFriend } from "@/types/types";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { acceptFriendRequest } from "@/service/friend-service";
+import {
+  acceptFriendRequest,
+  cancelOutgoingFriendRequest,
+} from "@/service/friend-service";
 import useAxios from "@/lib/hooks/useAxios";
 
 const PendingFriendRequestListItem = ({
@@ -14,18 +17,20 @@ const PendingFriendRequestListItem = ({
   const { toast } = useToast();
   const axios = useAxios();
 
-  const acceptIncomingFriendRequest = () => async () => {
+  const handleAcceptIncomingFriendRequest = () => async () => {
     try {
       acceptFriendRequest(axios, request.friendId);
     } catch (error) {}
   };
 
-  const declineIncomingFriendRequest = () => async () => {
+  const handleDeclineIncomingFriendRequest = () => async () => {
     console.log("Declining friend request");
   };
 
-  const cancelOutgoingFriendRequest = () => async () => {
-    console.log("Canceling friend request");
+  const handleCancelFriendRequest = () => async () => {
+    try {
+      cancelOutgoingFriendRequest(axios, request.friendId);
+    } catch (error) {}
   };
 
   return (
@@ -52,7 +57,7 @@ const PendingFriendRequestListItem = ({
             <div className="flex flex-row space-x-4">
               <button
                 className="group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300 hover:bg-neutral-800"
-                onClick={acceptIncomingFriendRequest()}
+                onClick={handleAcceptIncomingFriendRequest()}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +76,7 @@ const PendingFriendRequestListItem = ({
               </button>
               <button
                 className="group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300 hover:bg-neutral-800"
-                onClick={declineIncomingFriendRequest()}
+                onClick={handleDeclineIncomingFriendRequest()}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +97,7 @@ const PendingFriendRequestListItem = ({
           ) : (
             <button
               className="group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300 hover:bg-neutral-800"
-              onClick={cancelOutgoingFriendRequest()}
+              onClick={handleCancelFriendRequest()}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
