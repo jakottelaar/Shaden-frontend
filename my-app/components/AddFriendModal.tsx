@@ -12,15 +12,13 @@ const AddFriendModal = () => {
     setResponseMessage("");
     try {
       if (friendUsername !== "") {
-        const response: { status: number } = await sentFriendRequest(
-          axios,
-          friendUsername,
-        );
+        const response: { status: number; message: string } =
+          await sentFriendRequest(axios, friendUsername);
         console.log(response);
 
         const statusMessages: { [key: number]: string } = {
-          201: "Friend request sent!",
-          400: "You already sent a friend request to this user",
+          201: response.message,
+          400: response.message,
           404: "User not found. Please check the username again",
         };
 
@@ -49,7 +47,7 @@ const AddFriendModal = () => {
           <h1 className="text-white">Add a friend with their username</h1>
           <input
             className={`rounded-md border bg-primary-100 px-2 py-1 text-white outline-none ${
-              responseMessage === "Friend request sent!"
+              responseMessage === "Friend request sent successfully"
                 ? "border-green-500"
                 : responseMessage === ""
                 ? "border-transparent"
@@ -67,7 +65,7 @@ const AddFriendModal = () => {
             <p
               className={`${
                 responseMessage
-                  ? responseMessage === "Friend request sent!"
+                  ? responseMessage === "Friend request sent successfully"
                     ? "text-green-500"
                     : "text-red-500"
                   : "invisible"
