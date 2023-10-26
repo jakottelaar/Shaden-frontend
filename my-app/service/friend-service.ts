@@ -72,3 +72,21 @@ export const cancelOutgoingFriendRequest = async (
     return error.response.data;
   }
 };
+
+export const rejectIncomingFriendRequest = async (
+  axios: AxiosInstance,
+  userId: number,
+) => {
+  try {
+    const response = await axios.patch(`/api/friends/${userId}/reject`);
+
+    console.log(response.data);
+
+    const result = response.data.results;
+
+    return result;
+  } catch (error: any) {
+    console.error(error);
+    return error.response.data;
+  }
+};

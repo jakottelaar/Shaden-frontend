@@ -1,35 +1,40 @@
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import { PendingFriend } from "@/types/types";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/components/ui/use-toast";
 import {
   acceptFriendRequest,
   cancelOutgoingFriendRequest,
+  rejectIncomingFriendRequest,
 } from "@/service/friend-service";
 import useAxios from "@/lib/hooks/useAxios";
 
 const PendingFriendRequestListItem = ({
   request,
+  onUpdatePendingRequests,
 }: {
   request: PendingFriend;
+  onUpdatePendingRequests: (requestId: number) => void;
 }) => {
-  const { toast } = useToast();
   const axios = useAxios();
 
   const handleAcceptIncomingFriendRequest = () => async () => {
     try {
       acceptFriendRequest(axios, request.friendId);
+      onUpdatePendingRequests(request.requestId);
     } catch (error) {}
   };
 
-  const handleDeclineIncomingFriendRequest = () => async () => {
-    console.log("Declining friend request");
+  const handleRejectIncomingFriendRequest = () => async () => {
+    try {
+      rejectIncomingFriendRequest(axios, request.friendId);
+      onUpdatePendingRequests(request.requestId);
+    } catch (error) {}
   };
 
   const handleCancelFriendRequest = () => async () => {
     try {
       cancelOutgoingFriendRequest(axios, request.friendId);
+      onUpdatePendingRequests(request.requestId);
     } catch (error) {}
   };
 
@@ -76,7 +81,7 @@ const PendingFriendRequestListItem = ({
               </button>
               <button
                 className="group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300 hover:bg-neutral-800"
-                onClick={handleDeclineIncomingFriendRequest()}
+                onClick={handleRejectIncomingFriendRequest()}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
