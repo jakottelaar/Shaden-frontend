@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import FriendsOverviewNavbar from "./FriendsOverviewNavbar";
 import { Separator } from "./ui/separator";
