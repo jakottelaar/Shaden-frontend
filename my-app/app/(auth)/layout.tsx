@@ -6,7 +6,7 @@ const AuthLayout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession();
 
   if (session) {
-    redirect("/home");
+    redirect("/channels");
   }
 
   return (

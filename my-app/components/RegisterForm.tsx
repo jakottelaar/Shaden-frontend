@@ -46,7 +46,7 @@ const RegisterForm = () => {
       email,
       password,
       redirect: true,
-      callbackUrl: "/home",
+      callbackUrl: "/channels",
     });
   };
 

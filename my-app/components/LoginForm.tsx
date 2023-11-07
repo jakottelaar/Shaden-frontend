@@ -33,7 +33,7 @@ const LoginForm = () => {
       email,
       password,
       redirect: true,
-      callbackUrl: "/home",
+      callbackUrl: "/channels",
     });
   };
 
