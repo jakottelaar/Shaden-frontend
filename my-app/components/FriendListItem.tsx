@@ -1,11 +1,18 @@
+"use client";
 import React from "react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import { Friend } from "@/types/types";
 import UserProfileModal from "./UserProfileModal";
+import { useRouter } from "next/navigation";
 
 const FriendListItem = ({ friend }: { friend: Friend }) => {
   console.log(friend);
+  const router = useRouter();
+
+  const openDirectMessage = () => {
+    router.push(`/channels/${friend.friendId}`);
+  };
 
   return (
     <div>
@@ -25,7 +32,10 @@ const FriendListItem = ({ friend }: { friend: Friend }) => {
           </div>
         </div>
         <div className="flex flex-row space-x-4">
-          <button className="group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300 hover:bg-neutral-800">
+          <button
+            className="group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300 hover:bg-neutral-800"
+            onClick={openDirectMessage}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
