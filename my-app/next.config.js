@@ -7,7 +7,7 @@ const nextConfig = {
         return [
             {
                 source: '/',
-                destination: '/channels',
+                destination: '/login',
                 permanent: false,
             },
         ]
