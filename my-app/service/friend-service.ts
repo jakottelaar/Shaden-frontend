@@ -101,3 +101,19 @@ export const removeFriend = async (axios: AxiosInstance, userId: number) => {
     return error.response.data;
   }
 };
+
+export const getFriendById = async (
+  axios: AxiosInstance,
+  userId: number,
+): Promise<Friend> => {
+  try {
+    const response = await axios.get(`/api/friends/${userId}`);
+
+    const result = response.data.results as Friend;
+
+    return result;
+  } catch (error: any) {
+    console.error(error);
+    return error.response.data;
+  }
+};
