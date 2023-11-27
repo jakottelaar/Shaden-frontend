@@ -11,3 +11,9 @@ export interface PendingFriend {
   status: string;
   requestType: string;
 }
+
+export interface Channel {
+  channel_id: number;
+  user1_id: number;
+  user2_id: number;
+}
