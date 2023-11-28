@@ -89,7 +89,7 @@ const LoginForm = () => {
         </div>
         <div className="flex w-[300px] flex-col justify-center rounded-r-lg bg-primary-300 p-6 text-center">
           <Image
-            src="/lighting.png"
+            src="/Shaden-logo-circle.png"
             alt="Placeholder Image"
             width={300}
             height={200}
