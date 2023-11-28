@@ -4,20 +4,23 @@ import DirectMessageNavbar from "./DirectMessageNavbar";
 import DirectMessageChat from "./DirectMessageChat";
 import { Separator } from "./ui/separator";
 import useAxios from "@/lib/hooks/useAxios";
+import { getDmChannelWithId } from "@/service/channel-service";
+import { Channel, Friend } from "@/types/types";
 import { getFriendById } from "@/service/friend-service";
-import { Friend } from "@/types/types";
 
-const DirectMessageContainer = ({ userId }: { userId: string }) => {
+const DirectMessageContainer = ({ channelId }: { channelId: number }) => {
   const [friend, setFriend] = useState<Friend | null>(null);
+  const [channel, setChannel] = useState<Channel | null>(null);
   const [error, setError] = useState<string | null>(null);
   const axios = useAxios();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getFriendById(axios, parseInt(userId));
-        setFriend(data);
-        setError(null);
+        const data = await getDmChannelWithId(axios, channelId);
+        const friend = await getFriendById(axios, data.user2_id);
+        setFriend(friend);
+        setChannel(data);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("An error occurred while fetching data.");
@@ -25,7 +28,7 @@ const DirectMessageContainer = ({ userId }: { userId: string }) => {
     };
 
     fetchData();
-  }, [axios, userId]);
+  }, [axios, channelId]);
 
   return (
     <div className="flex h-screen w-3/4 flex-col px-6 py-2">
