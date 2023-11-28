@@ -11,14 +11,14 @@ const SettingsModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="group relative mt-auto flex h-12 w-12 items-center justify-center rounded-3xl bg-primary-100 transition-all duration-200 ease-linear hover:rounded-xl hover:bg-secondary-100">
+      <DialogTrigger className="group relative mt-auto flex h-12 w-12 items-center justify-center rounded-3xl bg-primary-100 transition-all duration-200 ease-linear hover:rounded-2xl hover:bg-white">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="white"
-          className="h-8 w-8"
+          className="h-8 w-8 transition-all duration-200 hover:stroke-secondary-100"
         >
           <path
             strokeLinecap="round"
