@@ -6,7 +6,7 @@ export const sentFriendRequest = async (
   username: string,
 ) => {
   try {
-    const response = await axios.post(`/api/friends/add`, { username });
+    const response = await axios.post(`/api/friends/requests`, { username });
     console.log(response.data);
     return response.data;
   } catch (error: any) {
