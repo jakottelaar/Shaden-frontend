@@ -28,7 +28,7 @@ const DirectMessageContainer = ({ channelId }: { channelId: number }) => {
     };
 
     fetchData();
-  }, [axios, channelId]);
+  }, [channelId]);
 
   return (
     <div className="flex h-screen w-3/4 flex-col px-6 py-2">

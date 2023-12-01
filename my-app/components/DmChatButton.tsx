@@ -6,24 +6,14 @@ import useAxios from "@/lib/hooks/useAxios";
 const DmChatButton = ({ friendId }: { friendId: number }) => {
   const router = useRouter();
   const axios = useAxios();
-  const [channelId, setChannelId] = useState<number | null>(null);
-
-  const fetchChannel = async () => {
-    try {
-      const channel = await getChannelByUserId(axios, friendId);
-
-      console.log(channel);
-
-      setChannelId(channel.channel_id);
-    } catch (error) {
-      const newChannel = await createDMChannel(axios, friendId);
-      setChannelId(newChannel.channel_id);
-    }
-  };
 
   const openDirectMessage = async () => {
-    await fetchChannel();
-    router.push(`/channels/${channelId}`);
+    try {
+      const channel = await getChannelByUserId(axios, friendId);
+      router.push(`/channels/${channel.channel_id}`);
+    } catch (error: any) {
+      console.log(error.response.status);
+    }
   };
 
   return (

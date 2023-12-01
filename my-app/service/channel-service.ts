@@ -1,5 +1,5 @@
 import { Channel } from "@/types/types";
-import axios, { AxiosInstance } from "axios";
+import { AxiosInstance } from "axios";
 
 export const getChannelByUserId = async (
   axios: AxiosInstance,
@@ -14,8 +14,12 @@ export const getChannelByUserId = async (
 
     return result;
   } catch (error: any) {
-    console.error(error);
-    return error;
+    if (error.response.data.status === 404) {
+      const response = await createDMChannel(axios, userId);
+
+      return response;
+    }
+    return error.response.data;
   }
 };
 
