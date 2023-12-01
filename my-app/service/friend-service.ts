@@ -35,7 +35,9 @@ export const acceptFriendRequest = async (
   userId: number,
 ) => {
   try {
-    const response = await axios.patch(`/api/friends/${userId}/accept`);
+    const response = await axios.patch(
+      `/api/friends/requests/${userId}/accept`,
+    );
     console.log(response.data);
     return response.data;
   } catch (error: any) {
@@ -78,7 +80,9 @@ export const rejectIncomingFriendRequest = async (
   userId: number,
 ) => {
   try {
-    const response = await axios.patch(`/api/friends/${userId}/reject`);
+    const response = await axios.patch(
+      `/api/friends/requests/${userId}/reject`,
+    );
 
     console.log(response.data);
 
