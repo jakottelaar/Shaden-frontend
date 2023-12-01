@@ -1,5 +1,5 @@
 import { Channel } from "@/types/types";
-import { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
 
 export const getChannelByUserId = async (
   axios: AxiosInstance,
@@ -51,6 +51,18 @@ export const getDmChannelWithId = async (
     const response = await axios.get(`/api/channels/direct/${channelId}`);
 
     const result = response.data.results as Channel;
+    return result;
+  } catch (error: any) {
+    console.error(error);
+    return error.response.data;
+  }
+};
+
+export const getAllChannels = async (axios: AxiosInstance) => {
+  try {
+    const response = await axios.get(`/api/channels`);
+
+    const result = response.data.results;
     return result;
   } catch (error: any) {
     console.error(error);
