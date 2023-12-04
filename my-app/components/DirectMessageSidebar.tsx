@@ -1,9 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Separator } from "./ui/separator";
+import { getAllDirectMessageChannels } from "@/service/channel-service";
+import useAxios from "@/lib/hooks/useAxios";
+import DirectMessageListItem from "./DirectMessageListItem";
+import { Channel } from "@/types/types";
 
 const DirectMessageSidebar = () => {
+  const axios = useAxios();
   const [selectedOption, setSelectedOption] = useState("Friends");
+  // const [channels, setChannels] = useState<Channel[]>([]);
+
+  // useEffect(() => {
+  //   const fetchChannels = async () => {
+  //     try {
+  //       const channels = await getAllDirectMessageChannels(axios);
+  //       setChannels(channels);
+  //     } catch (error) {
+  //       console.error("Error fetching channels:", error);
+  //     }
+  //   };
+  //   fetchChannels();
+  // }, [axios, channels]);
+
+  const channels = [
+    {
+      channel_id: 1,
+      user1_id: 1,
+      user2_id: 2,
+    },
+  ];
 
   return (
     <div className="flex h-screen flex-col bg-primary-500 p-2">
@@ -36,6 +62,9 @@ const DirectMessageSidebar = () => {
       </button>
 
       <h1 className="mt-6 text-sm text-white">Direct messages</h1>
+      {channels.map((channel: Channel) => (
+        <DirectMessageListItem key={channel.channel_id} channel={channel} />
+      ))}
     </div>
   );
 };
