@@ -69,3 +69,15 @@ export const getAllChannels = async (axios: AxiosInstance) => {
     return error.response.data;
   }
 };
+
+export const getAllDirectMessageChannels = async (axios: AxiosInstance) => {
+  try {
+    const response = await axios.get(`/api/channels/direct`);
+
+    const result = response.data.results;
+    return result;
+  } catch (error: any) {
+    console.error(error);
+    return error.response.data;
+  }
+};
