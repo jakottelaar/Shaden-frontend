@@ -4,7 +4,9 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { login } from "@/service/auth-service";
+import { useRouter } from "next/navigation";
+import { useAuth } from "./AuthProvider";
 
 const loginSchema = z.object({
   email: z.string({ required_error: "Email is required" }).email(),
@@ -14,6 +16,9 @@ const loginSchema = z.object({
 type loginValidation = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
+  const router = useRouter();
+  const { setToken } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -28,13 +33,16 @@ const LoginForm = () => {
     } catch (error) {}
   };
 
-  const handleLogin = (email: string, password: string) => {
-    signIn("credentials", {
-      email,
-      password,
-      redirect: true,
-      callbackUrl: "/channels",
-    });
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      const response = await login(email, password);
+
+      setToken(response);
+
+      router.push("/channels");
+    } catch (error) {
+      throw new Error("Something went wrong");
+    }
   };
 
   return (

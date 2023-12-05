@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
 import { getUserProfile } from "@/service/user-service";
-import useAxios from "@/lib/hooks/useAxios";
 import { Separator } from "./ui/separator";
+import { axiosInstance } from "@/lib/axios-service";
+import { useAuth } from "./AuthProvider";
 
 interface User {
   email: string;
@@ -12,23 +12,14 @@ interface User {
 
 const AccountSettings = () => {
   const [userData, setUserData] = useState({} as User | null);
-  const { data: session } = useSession();
-  const axios = useAxios();
+  const { accessToken } = useAuth();
+  const instance = axiosInstance(accessToken);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const userData = await getUserProfile(axios);
-      if (userData) {
-        setUserData(userData);
-      }
-    };
-
-    fetchData();
-  }, [session]);
-
-  const handleLogout = async () => {
-    signOut({ callbackUrl: "/login" });
-  };
+    getUserProfile(instance).then((res) => {
+      setUserData(res);
+    });
+  }, []);
 
   return (
     <div className="mt-6 flex flex-col space-y-5 p-6">
@@ -45,10 +36,7 @@ const AccountSettings = () => {
         Change password
       </button>
       <Separator className="bg-black" />
-      <button
-        className="w-fit rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500"
-        onClick={handleLogout}
-      >
+      <button className="w-fit rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500">
         logout
       </button>
       <Separator className="bg-black" />

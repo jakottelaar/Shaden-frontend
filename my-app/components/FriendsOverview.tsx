@@ -6,7 +6,6 @@ import {
   getAllFriends,
   getPendingFriendRequests,
 } from "@/service/friend-service";
-import useAxios from "@/lib/hooks/useAxios";
 
 const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   const [friendList, setFriendList] = useState<Friend[]>([]);
@@ -15,15 +14,14 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   );
   const [amountOfUsers, setAmountOfUsers] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const axios = useAxios();
 
   useEffect(() => {
     const fetchFunctions: Record<
       string,
       () => Promise<Friend[] | PendingFriend[]>
     > = {
-      All: () => getAllFriends(axios),
-      Pending: () => getPendingFriendRequests(axios),
+      All: () => getAllFriends(),
+      Pending: () => getPendingFriendRequests(),
     };
 
     const fetchData = async () => {

@@ -1,4 +1,3 @@
-import useAxios from "@/lib/hooks/useAxios";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { useState } from "react";
 import { sentFriendRequest } from "@/service/friend-service";
@@ -6,14 +5,13 @@ import { sentFriendRequest } from "@/service/friend-service";
 const AddFriendModal = () => {
   const [friendUsername, setFriendUsername] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
-  const axios = useAxios();
 
   const handleFriendRequest = async () => {
     setResponseMessage("");
     try {
       if (friendUsername !== "") {
         const response: { status: number; message: string } =
-          await sentFriendRequest(axios, friendUsername);
+          await sentFriendRequest(friendUsername);
         console.log(response);
 
         const statusMessages: { [key: number]: string } = {

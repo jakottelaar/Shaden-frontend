@@ -2,11 +2,8 @@ import { Channel, Friend } from "@/types/types";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import React, { useEffect, useState } from "react";
 import { getFriendById } from "@/service/friend-service";
-import useAxios from "@/lib/hooks/useAxios";
 
 const DirectMessageListItem = ({ channel }: { channel: Channel }) => {
-  const axios = useAxios();
-
   const [friend, setFriend] = useState<Friend | null>();
 
   // useEffect(() => {

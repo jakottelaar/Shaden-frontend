@@ -2,12 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { Separator } from "./ui/separator";
 import { getAllDirectMessageChannels } from "@/service/channel-service";
-import useAxios from "@/lib/hooks/useAxios";
 import DirectMessageListItem from "./DirectMessageListItem";
 import { Channel } from "@/types/types";
 
 const DirectMessageSidebar = () => {
-  const axios = useAxios();
   const [selectedOption, setSelectedOption] = useState("Friends");
   // const [channels, setChannels] = useState<Channel[]>([]);
 
