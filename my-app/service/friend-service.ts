@@ -1,9 +1,12 @@
-import { axiosInstance } from "@/lib/axios-service";
+import { AxiosInstance } from "axios";
 import { Friend, PendingFriend } from "@/types/types";
 
-export const sentFriendRequest = async (username: string) => {
+export const sentFriendRequest = async (
+  axios: AxiosInstance,
+  username: string,
+) => {
   try {
-    const response = await axiosInstance.post(`/api/friends/requests`, {
+    const response = await axios.post(`/api/friends/requests`, {
       username,
     });
     console.log(response.data);
@@ -14,9 +17,11 @@ export const sentFriendRequest = async (username: string) => {
   }
 };
 
-export const getPendingFriendRequests = async (): Promise<PendingFriend[]> => {
+export const getPendingFriendRequests = async (
+  axios: AxiosInstance,
+): Promise<PendingFriend[]> => {
   try {
-    const response = await axiosInstance.get(`/api/friends/pending`);
+    const response = await axios.get(`/api/friends/pending`);
 
     const result = response.data.results as PendingFriend[];
 
@@ -27,9 +32,12 @@ export const getPendingFriendRequests = async (): Promise<PendingFriend[]> => {
   }
 };
 
-export const acceptFriendRequest = async (userId: number) => {
+export const acceptFriendRequest = async (
+  axios: AxiosInstance,
+  userId: number,
+) => {
   try {
-    const response = await axiosInstance.patch(
+    const response = await axios.patch(
       `/api/friends/requests/${userId}/accept`,
     );
     console.log(response.data);
@@ -40,9 +48,11 @@ export const acceptFriendRequest = async (userId: number) => {
   }
 };
 
-export const getAllFriends = async (): Promise<Friend[]> => {
+export const getAllFriends = async (
+  axios: AxiosInstance,
+): Promise<Friend[]> => {
   try {
-    const response = await axiosInstance.get(`/api/friends/list`);
+    const response = await axios.get(`/api/friends/list`);
 
     const result = response.data.results as Friend[];
 
@@ -53,11 +63,12 @@ export const getAllFriends = async (): Promise<Friend[]> => {
   }
 };
 
-export const cancelOutgoingFriendRequest = async (userId: number) => {
+export const cancelOutgoingFriendRequest = async (
+  axios: AxiosInstance,
+  userId: number,
+) => {
   try {
-    const response = await axiosInstance.delete(
-      `/api/friends/${userId}/cancel`,
-    );
+    const response = await axios.delete(`/api/friends/${userId}/cancel`);
     console.log(response.data);
     return response.data;
   } catch (error: any) {
@@ -66,9 +77,12 @@ export const cancelOutgoingFriendRequest = async (userId: number) => {
   }
 };
 
-export const rejectIncomingFriendRequest = async (userId: number) => {
+export const rejectIncomingFriendRequest = async (
+  axios: AxiosInstance,
+  userId: number,
+) => {
   try {
-    const response = await axiosInstance.patch(
+    const response = await axios.patch(
       `/api/friends/requests/${userId}/reject`,
     );
 
@@ -83,9 +97,9 @@ export const rejectIncomingFriendRequest = async (userId: number) => {
   }
 };
 
-export const removeFriend = async (userId: number) => {
+export const removeFriend = async (axios: AxiosInstance, userId: number) => {
   try {
-    const response = await axiosInstance.delete(`/api/friends/${userId}`);
+    const response = await axios.delete(`/api/friends/${userId}`);
     console.log(response.data);
     return response.data;
   } catch (error: any) {
@@ -94,9 +108,12 @@ export const removeFriend = async (userId: number) => {
   }
 };
 
-export const getFriendById = async (userId: number): Promise<Friend> => {
+export const getFriendById = async (
+  axios: AxiosInstance,
+  userId: number,
+): Promise<Friend> => {
   try {
-    const response = await axiosInstance.get(`/api/friends/${userId}`);
+    const response = await axios.get(`/api/friends/${userId}`);
 
     const result = response.data.results as Friend;
 

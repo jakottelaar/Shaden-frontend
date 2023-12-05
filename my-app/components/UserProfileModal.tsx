@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Friend } from "@/types/types";
 import { removeFriend } from "@/service/friend-service";
+import { useAuth } from "./AuthProvider";
+import { axiosInstance } from "@/lib/axios-service";
 
 const UserProfileModal = ({
   openModal,
@@ -11,6 +13,8 @@ const UserProfileModal = ({
   friend: Friend;
 }) => {
   const [open, setOpen] = useState(false);
+  const { accessToken } = useAuth();
+  const instance = axiosInstance(accessToken);
 
   useEffect(() => {
     setOpen(openModal);
@@ -18,7 +22,7 @@ const UserProfileModal = ({
 
   const handleRemoveFriend = () => {
     try {
-      removeFriend(friend.friendId);
+      removeFriend(instance, friend.friendId);
     } catch (error) {
       console.error(error);
     }

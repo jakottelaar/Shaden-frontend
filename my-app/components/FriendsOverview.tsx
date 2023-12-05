@@ -6,6 +6,8 @@ import {
   getAllFriends,
   getPendingFriendRequests,
 } from "@/service/friend-service";
+import { axiosInstance } from "@/lib/axios-service";
+import { useAuth } from "./AuthProvider";
 
 const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   const [friendList, setFriendList] = useState<Friend[]>([]);
@@ -15,13 +17,16 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   const [amountOfUsers, setAmountOfUsers] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const { accessToken } = useAuth();
+  const instance = axiosInstance(accessToken);
+
   useEffect(() => {
     const fetchFunctions: Record<
       string,
       () => Promise<Friend[] | PendingFriend[]>
     > = {
-      All: () => getAllFriends(),
-      Pending: () => getPendingFriendRequests(),
+      All: () => getAllFriends(instance),
+      Pending: () => getPendingFriendRequests(instance),
     };
 
     const fetchData = async () => {
