@@ -1,12 +1,11 @@
 import { Channel } from "@/types/types";
-import axios, { AxiosInstance } from "axios";
+import { axiosInstance } from "@/lib/axios-service";
 
-export const getChannelByUserId = async (
-  axios: AxiosInstance,
-  userId: number,
-): Promise<Channel> => {
+export const getChannelByUserId = async (userId: number): Promise<Channel> => {
   try {
-    const response = await axios.get(`/api/channels/direct/user/${userId}`);
+    const response = await axiosInstance.get(
+      `/api/channels/direct/user/${userId}`,
+    );
 
     console.log(response.data);
 
@@ -15,7 +14,7 @@ export const getChannelByUserId = async (
     return result;
   } catch (error: any) {
     if (error.response.data.status === 404) {
-      const response = await createDMChannel(axios, userId);
+      const response = await createDMChannel(userId);
 
       return response;
     }
@@ -23,12 +22,9 @@ export const getChannelByUserId = async (
   }
 };
 
-export const createDMChannel = async (
-  axios: AxiosInstance,
-  userId: number,
-): Promise<Channel> => {
+export const createDMChannel = async (userId: number): Promise<Channel> => {
   try {
-    const response = await axios.post(`/api/channels/direct`, {
+    const response = await axiosInstance.post(`/api/channels/direct`, {
       userId,
     });
 
@@ -44,11 +40,12 @@ export const createDMChannel = async (
 };
 
 export const getDmChannelWithId = async (
-  axios: AxiosInstance,
   channelId: number,
 ): Promise<Channel> => {
   try {
-    const response = await axios.get(`/api/channels/direct/${channelId}`);
+    const response = await axiosInstance.get(
+      `/api/channels/direct/${channelId}`,
+    );
 
     const result = response.data.results as Channel;
     return result;
@@ -58,9 +55,9 @@ export const getDmChannelWithId = async (
   }
 };
 
-export const getAllChannels = async (axios: AxiosInstance) => {
+export const getAllChannels = async () => {
   try {
-    const response = await axios.get(`/api/channels`);
+    const response = await axiosInstance.get(`/api/channels`);
 
     const result = response.data.results;
     return result;
@@ -70,9 +67,9 @@ export const getAllChannels = async (axios: AxiosInstance) => {
   }
 };
 
-export const getAllDirectMessageChannels = async (axios: AxiosInstance) => {
+export const getAllDirectMessageChannels = async () => {
   try {
-    const response = await axios.get(`/api/channels/direct`);
+    const response = await axiosInstance.get(`/api/channels/direct`);
 
     const result = response.data.results;
     return result;
