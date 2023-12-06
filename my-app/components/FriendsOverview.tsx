@@ -25,6 +25,7 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
       string,
       () => Promise<Friend[] | PendingFriend[]>
     > = {
+      Online: () => getAllFriends(instance),
       All: () => getAllFriends(instance),
       Pending: () => getPendingFriendRequests(instance),
     };
