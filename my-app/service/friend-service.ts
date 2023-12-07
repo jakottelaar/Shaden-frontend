@@ -9,7 +9,6 @@ export const sentFriendRequest = async (
     const response = await axios.post(`/api/friends/requests`, {
       username,
     });
-    console.log(response.data);
     return response.data;
   } catch (error: any) {
     console.error(error);
@@ -40,7 +39,6 @@ export const acceptFriendRequest = async (
     const response = await axios.patch(
       `/api/friends/requests/${userId}/accept`,
     );
-    console.log(response.data);
     return response.data;
   } catch (error: any) {
     console.error(error);
@@ -69,7 +67,6 @@ export const cancelOutgoingFriendRequest = async (
 ) => {
   try {
     const response = await axios.delete(`/api/friends/${userId}/cancel`);
-    console.log(response.data);
     return response.data;
   } catch (error: any) {
     console.error(error);
@@ -86,8 +83,6 @@ export const rejectIncomingFriendRequest = async (
       `/api/friends/requests/${userId}/reject`,
     );
 
-    console.log(response.data);
-
     const result = response.data.results;
 
     return result;
@@ -100,7 +95,6 @@ export const rejectIncomingFriendRequest = async (
 export const removeFriend = async (axios: AxiosInstance, userId: number) => {
   try {
     const response = await axios.delete(`/api/friends/${userId}`);
-    console.log(response.data);
     return response.data;
   } catch (error: any) {
     console.error(error);

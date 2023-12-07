@@ -15,7 +15,6 @@ const AddFriendModal = () => {
       if (friendUsername !== "") {
         const response: { status: number; message: string } =
           await sentFriendRequest(instance, friendUsername);
-        console.log(response);
 
         const statusMessages: { [key: number]: string } = {
           201: response.message,

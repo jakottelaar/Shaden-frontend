@@ -8,8 +8,6 @@ export const getChannelByUserId = async (
   try {
     const response = await axios.get(`/api/channels/direct/user/${userId}`);
 
-    console.log(response.data);
-
     const result = response.data.results as Channel;
 
     return result;
@@ -31,8 +29,6 @@ export const createDMChannel = async (
     const response = await axios.post(`/api/channels/direct`, {
       userId,
     });
-
-    console.log(response.data);
 
     const result = response.data.results as Channel;
 

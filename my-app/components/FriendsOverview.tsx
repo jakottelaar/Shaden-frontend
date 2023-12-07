@@ -33,7 +33,6 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
       try {
         if (selectedOption in fetchFunctions) {
           const data = await fetchFunctions[selectedOption]();
-          console.log(data);
 
           if (selectedOption === "Pending") {
             setPendingFriendList(data as PendingFriend[]);
@@ -54,13 +53,10 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   }, [selectedOption]);
 
   const onUpdatePendingRequests = (requestId: number) => {
-    console.log("onUpdatePendingRequests" + requestId);
-
     const updatedList = pendingFriendList.filter((request) => {
       return request.requestId !== requestId;
     });
 
-    console.log(updatedList);
     setAmountOfUsers(updatedList.length);
     setPendingFriendList(updatedList);
   };

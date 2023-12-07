@@ -22,8 +22,6 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (accessToken != null) {
-      console.log("accessToken", accessToken);
-
       router.push("/channels");
     }
   }, [accessToken, router]);

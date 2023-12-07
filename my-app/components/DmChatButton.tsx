@@ -1,7 +1,6 @@
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { getChannelByUserId } from "@/service/channel-service";
-import { useAuth } from "./AuthProvider";
 import { axiosInstance } from "@/lib/axios-service";
 
 const DmChatButton = ({ friendId }: { friendId: number }) => {
@@ -13,7 +12,9 @@ const DmChatButton = ({ friendId }: { friendId: number }) => {
       const channel = await getChannelByUserId(instance, friendId);
       router.push(`/channels/${channel.channel_id}`);
     } catch (error: any) {
-      console.log(error.response.status);
+      if (error.response.status === 404) {
+        router.push("/channels");
+      }
     }
   };
 
