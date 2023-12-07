@@ -1,19 +1,9 @@
 "use client";
-import { useAuth } from "@/components/AuthProvider";
 import DirectMessageSidebar from "@/components/DirectMessageSidebar";
 import NavigationSidebar from "@/components/NavigationSidebar";
-import { redirect } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
 const layout = ({ children }: { children: ReactNode }) => {
-  const { accessToken } = useAuth();
-
-  useEffect(() => {
-    if (accessToken == null) {
-      redirect("/login");
-    }
-  });
-
   return (
     <div className="h-screen bg-primary-100">
       <div className="flex flex-row">
