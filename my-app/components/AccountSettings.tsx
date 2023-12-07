@@ -4,6 +4,8 @@ import { getUserProfile } from "@/service/user-service";
 import { Separator } from "./ui/separator";
 import { axiosInstance } from "@/lib/axios-service";
 import { useAuth } from "./AuthProvider";
+import { logout } from "@/service/auth-service";
+import { useRouter } from "next/navigation";
 
 interface User {
   email: string;
@@ -12,13 +14,25 @@ interface User {
 
 const AccountSettings = () => {
   const [userData, setUserData] = useState({} as User | null);
+  const { updateToken } = useAuth();
   const instance = axiosInstance();
+  const router = useRouter();
 
   useEffect(() => {
     getUserProfile(instance).then((res) => {
       setUserData(res);
     });
   }, []);
+
+  const logoutUser = async () => {
+    try {
+      const response = await logout();
+      updateToken(null);
+      if (response.status === 200) {
+        router.push("/login");
+      }
+    } catch (error) {}
+  };
 
   return (
     <div className="mt-6 flex flex-col space-y-5 p-6">
@@ -35,7 +49,10 @@ const AccountSettings = () => {
         Change password
       </button>
       <Separator className="bg-black" />
-      <button className="w-fit rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500">
+      <button
+        className="w-fit rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500"
+        onClick={logoutUser}
+      >
         logout
       </button>
       <Separator className="bg-black" />

@@ -6,6 +6,9 @@ import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
 const layout = ({ children }: { children: ReactNode }) => {
+  const { accessToken } = useAuth();
+  console.log(accessToken);
+
   return (
     <div className="h-screen bg-primary-100">
       <div className="flex flex-row">

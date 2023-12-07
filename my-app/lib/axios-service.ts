@@ -47,11 +47,15 @@ export const axiosInstance = (): AxiosInstance => {
               "Bearer " + accessToken;
             originalRequest.headers["Authorization"] = "Bearer " + accessToken;
 
+            originalRequest._retry = false;
+
             return api(originalRequest);
-          } else {
+          } else if (response.status === 401) {
             window.location.href = "/login";
           }
-        } catch (error) {}
+        } catch (error) {
+          window.location.href = "/login";
+        }
       }
       return Promise.reject(error);
     },

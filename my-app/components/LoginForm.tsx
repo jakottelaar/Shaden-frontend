@@ -7,6 +7,7 @@ import Image from "next/image";
 import { login } from "@/service/auth-service";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./AuthProvider";
+import { useEffect } from "react";
 
 const loginSchema = z.object({
   email: z.string({ required_error: "Email is required" }).email(),
@@ -19,9 +20,13 @@ const LoginForm = () => {
   const router = useRouter();
   const { accessToken, setToken } = useAuth();
 
-  if (accessToken) {
-    router.push("/channels");
-  }
+  useEffect(() => {
+    if (accessToken != null) {
+      console.log("accessToken", accessToken);
+
+      router.push("/channels");
+    }
+  }, [accessToken, router]);
 
   const {
     register,

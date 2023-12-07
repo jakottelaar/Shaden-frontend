@@ -43,3 +43,18 @@ export const register = async (
     throw error;
   }
 };
+
+export const logout = async () => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/auth/logout`,
+      {},
+      { withCredentials: true },
+    );
+
+    return response;
+  } catch (error: any) {
+    console.error("Logout failed:", error);
+    throw error;
+  }
+};
