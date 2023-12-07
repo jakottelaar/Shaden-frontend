@@ -17,7 +17,11 @@ type loginValidation = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const router = useRouter();
-  const { setToken } = useAuth();
+  const { accessToken, setToken } = useAuth();
+
+  if (accessToken) {
+    router.push("/channels");
+  }
 
   const {
     register,

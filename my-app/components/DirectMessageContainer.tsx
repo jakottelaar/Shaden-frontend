@@ -13,8 +13,7 @@ const DirectMessageContainer = ({ channelId }: { channelId: number }) => {
   const [friend, setFriend] = useState<Friend | null>(null);
   const [channel, setChannel] = useState<Channel | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const { accessToken } = useAuth();
-  const instance = axiosInstance(accessToken);
+  const instance = axiosInstance();
 
   useEffect(() => {
     const fetchData = async () => {

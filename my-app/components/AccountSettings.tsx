@@ -12,8 +12,7 @@ interface User {
 
 const AccountSettings = () => {
   const [userData, setUserData] = useState({} as User | null);
-  const { accessToken } = useAuth();
-  const instance = axiosInstance(accessToken);
+  const instance = axiosInstance();
 
   useEffect(() => {
     getUserProfile(instance).then((res) => {

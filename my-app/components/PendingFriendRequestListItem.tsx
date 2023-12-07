@@ -16,8 +16,7 @@ const PendingFriendRequestListItem = ({
   request: PendingFriend;
   onUpdatePendingRequests: (requestId: number) => void;
 }) => {
-  const { accessToken } = useAuth();
-  const instance = axiosInstance(accessToken);
+  const instance = axiosInstance();
 
   const handleAcceptIncomingFriendRequest = () => async () => {
     try {

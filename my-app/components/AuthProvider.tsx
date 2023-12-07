@@ -4,6 +4,7 @@ import { ReactNode, createContext, useContext, useState } from "react";
 interface AuthContextProps {
   accessToken: string | null;
   setToken: (token: string | null) => void;
+  updateToken: (token: string) => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -11,8 +12,12 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setToken] = useState<string | null>(null);
 
+  const updateToken = (token: string) => {
+    setToken(token);
+  };
+
   return (
-    <AuthContext.Provider value={{ accessToken, setToken }}>
+    <AuthContext.Provider value={{ accessToken, setToken, updateToken }}>
       {children}
     </AuthContext.Provider>
   );
@@ -22,8 +27,7 @@ const useAuth = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    console.error("useAuth must be used within an AuthProvider");
-    return { accessToken: null, setToken: () => {} };
+    return { accessToken: null, setToken: () => {}, updateToken: () => {} };
   }
 
   return context;

@@ -6,8 +6,7 @@ import { axiosInstance } from "@/lib/axios-service";
 
 const DmChatButton = ({ friendId }: { friendId: number }) => {
   const router = useRouter();
-  const { accessToken } = useAuth();
-  const instance = axiosInstance(accessToken);
+  const instance = axiosInstance();
 
   const openDirectMessage = async () => {
     try {

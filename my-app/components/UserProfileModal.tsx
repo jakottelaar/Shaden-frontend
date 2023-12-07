@@ -13,8 +13,7 @@ const UserProfileModal = ({
   friend: Friend;
 }) => {
   const [open, setOpen] = useState(false);
-  const { accessToken } = useAuth();
-  const instance = axiosInstance(accessToken);
+  const instance = axiosInstance();
 
   useEffect(() => {
     setOpen(openModal);

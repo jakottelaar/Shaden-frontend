@@ -7,8 +7,7 @@ import { axiosInstance } from "@/lib/axios-service";
 const AddFriendModal = () => {
   const [friendUsername, setFriendUsername] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
-  const { accessToken } = useAuth();
-  const instance = axiosInstance(accessToken);
+  const instance = axiosInstance();
 
   const handleFriendRequest = async () => {
     setResponseMessage("");

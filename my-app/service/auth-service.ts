@@ -3,10 +3,14 @@ const API_BASE_URL = process.env.API_BASE_URL;
 
 export const login = async (email: string, password: string) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
-      email,
-      password,
-    });
+    const response = await axios.post(
+      `${API_BASE_URL}/api/auth/login`,
+      {
+        email,
+        password,
+      },
+      { withCredentials: true },
+    );
 
     const accessToken = response.data.results.access_token;
 
@@ -23,11 +27,15 @@ export const register = async (
   password: string,
 ) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/auth/register`, {
-      username,
-      email,
-      password,
-    });
+    const response = await axios.post(
+      `${API_BASE_URL}/api/auth/register`,
+      {
+        username,
+        email,
+        password,
+      },
+      { withCredentials: true },
+    );
 
     return response.data.results;
   } catch (error: any) {

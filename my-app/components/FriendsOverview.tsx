@@ -17,8 +17,7 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   const [amountOfUsers, setAmountOfUsers] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { accessToken } = useAuth();
-  const instance = axiosInstance(accessToken);
+  const instance = axiosInstance();
 
   useEffect(() => {
     const fetchFunctions: Record<
