@@ -24,8 +24,8 @@ const DirectMessageSidebar = () => {
   const channels = [
     {
       channel_id: 1,
-      user1_id: 1,
-      user2_id: 2,
+      creator_id: 1,
+      participant_id: 2,
     },
   ];
 

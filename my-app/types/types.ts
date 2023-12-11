@@ -14,6 +14,6 @@ export interface PendingFriend {
 
 export interface Channel {
   channel_id: number;
-  user1_id: number;
-  user2_id: number;
+  creator_id: number;
+  participant_id: number;
 }

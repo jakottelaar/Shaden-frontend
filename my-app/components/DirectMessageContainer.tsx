@@ -19,7 +19,7 @@ const DirectMessageContainer = ({ channelId }: { channelId: number }) => {
     const fetchData = async () => {
       try {
         const data = await getDmChannelWithId(instance, channelId);
-        const friend = await getFriendById(instance, data.user2_id);
+        const friend = await getFriendById(instance, data.participant_id);
         setFriend(friend);
         setChannel(data);
       } catch (error) {
