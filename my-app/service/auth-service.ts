@@ -21,7 +21,7 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const register = async (
+export const registerApi = async (
   username: string,
   email: string,
   password: string,
@@ -37,7 +37,7 @@ export const register = async (
       { withCredentials: true },
     );
 
-    return response.data.results;
+    return response.data.results.access_token;
   } catch (error: any) {
     console.error("Register failed:", error);
     throw error;
