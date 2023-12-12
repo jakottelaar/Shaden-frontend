@@ -32,3 +32,9 @@ export interface MessageResponse {
   created_date: string;
   last_modified_date: string;
 }
+
+export interface UserProfile {
+  user_id: number;
+  username: string;
+  email: string;
+}
