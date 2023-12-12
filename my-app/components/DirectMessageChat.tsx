@@ -4,6 +4,8 @@ import { Channel, MessageRequest, MessageResponse } from "@/types/types";
 import stomp from "stompjs";
 import SockJS from "sockjs-client";
 import { useAuth } from "./AuthProvider";
+import { getChannelMessagingHistory } from "@/service/messaging-service";
+import { axiosInstance } from "@/lib/axios-service";
 
 const DirectMessageChat = ({
   channelId,
@@ -15,6 +17,7 @@ const DirectMessageChat = ({
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<MessageResponse[]>([]);
 
+  const instance = axiosInstance();
   const { accessToken } = useAuth();
 
   const socket = new SockJS("http://localhost:8080/ws", {
@@ -36,6 +39,8 @@ const DirectMessageChat = ({
       });
     });
 
+    fetchMessageHistory();
+
     return () => {
       stompClient.disconnect;
     };
@@ -51,6 +56,15 @@ const DirectMessageChat = ({
     stompClient.send("/app/send-message", {}, JSON.stringify(messageRequest));
 
     setMessage("");
+  };
+
+  const fetchMessageHistory = async () => {
+    try {
+      const data = await getChannelMessagingHistory(instance, channelId);
+      setMessages(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   return (
