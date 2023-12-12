@@ -44,7 +44,9 @@ const DirectMessageChat = ({
     stompClient.connect({}, () => {
       stompClient.subscribe(`/queue/${channelId}`, (message) => {
         const messageData: MessageResponse = JSON.parse(message.body);
-        setMessages((messages) => [...messages, messageData]);
+        setMessages((prevMessages) =>
+          prevMessages ? [...prevMessages, messageData] : [messageData],
+        );
       });
     });
 
@@ -77,6 +79,8 @@ const DirectMessageChat = ({
   const fetchMessageHistory = async () => {
     try {
       const data = await getChannelMessagingHistory(instance, channelId);
+      console.log(data);
+
       setMessages(data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -93,34 +97,36 @@ const DirectMessageChat = ({
   };
 
   return (
-    <ScrollArea className="">
-      {messages &&
-        messages.map((msg) => (
-          <div key={msg.message_id}>
-            <div className="mb-2 flex flex-row items-center space-x-2 rounded-md p-1 duration-300 hover:bg-primary-500">
-              <Avatar className="h-12 w-12">
-                <AvatarFallback className="pointer-events-none bg-gradient-to-br from-purple-500 to-secondary-100 text-xl capitalize">
-                  U
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col">
-                <div className="flex flex-row items-center space-x-2">
-                  <h1 className="text-sm font-semibold text-white">
-                    User {msg.sender_id}
-                  </h1>
-                  <h2 className="text-xs text-neutral-400">
-                    {formatTimestamp(msg.created_date)}
-                  </h2>
+    <div className="flex h-full flex-col">
+      <ScrollArea className="h-full">
+        {messages &&
+          messages.map((msg) => (
+            <div key={msg.message_id}>
+              <div className="mb-2 flex flex-row items-center space-x-2 rounded-md p-1 duration-300 hover:bg-primary-500">
+                <Avatar className="h-12 w-12">
+                  <AvatarFallback className="pointer-events-none bg-gradient-to-br from-purple-500 to-secondary-100 text-xl capitalize">
+                    U
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <div className="flex flex-row items-center space-x-2">
+                    <h1 className="text-sm font-semibold text-white">
+                      {msg.sender_username}
+                    </h1>
+                    <h2 className="text-xs text-neutral-400">
+                      {formatTimestamp(msg.created_date)}
+                    </h2>
+                  </div>
+                  <p className=" font-light text-neutral-300">{msg.content}</p>
                 </div>
-                <p className=" font-light text-neutral-300">{msg.content}</p>
               </div>
             </div>
-          </div>
-        ))}
-      <div className="sticky bottom-0 left-0 right-0 z-50 flex flex-row space-x-4">
+          ))}
+      </ScrollArea>
+      <div className="bottom-0 left-0 right-0 z-50 flex flex-row space-x-4 bg-primary-500">
         <input
           placeholder="Message"
-          className="w-full rounded-md bg-primary-500 p-2 text-white outline-none"
+          className="flex-grow rounded-md bg-primary-500 p-2 text-white outline-none"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyPress}
@@ -132,7 +138,7 @@ const DirectMessageChat = ({
           Send
         </button>
       </div>
-    </ScrollArea>
+    </div>
   );
 };
 
