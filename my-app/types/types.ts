@@ -29,6 +29,6 @@ export interface MessageResponse {
   channel_id: number;
   sender_id: number;
   content: string;
-  created_at: string;
+  created_date: string;
   last_modified_date: string;
 }

@@ -6,6 +6,8 @@ import SockJS from "sockjs-client";
 import { useAuth } from "./AuthProvider";
 import { getChannelMessagingHistory } from "@/service/messaging-service";
 import { axiosInstance } from "@/lib/axios-service";
+import { Avatar, AvatarFallback } from "./ui/avatar";
+import { formatTimestamp } from "@/lib/date-converter";
 
 const DirectMessageChat = ({
   channelId,
@@ -58,6 +60,12 @@ const DirectMessageChat = ({
     setMessage("");
   };
 
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  };
+
   const fetchMessageHistory = async () => {
     try {
       const data = await getChannelMessagingHistory(instance, channelId);
@@ -75,6 +83,7 @@ const DirectMessageChat = ({
           className="w-full rounded-md bg-primary-500 p-2 text-white outline-none"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
         />
         <button
           className="rounded-md bg-secondary-100 px-4 text-white"
@@ -84,7 +93,24 @@ const DirectMessageChat = ({
         </button>
       </div>
       {messages.map((msg) => (
-        <div key={msg.message_id}>{msg.content}</div>
+        <div key={msg.message_id}>
+          <div className="mb-4 flex flex-row items-center space-x-4">
+            <Avatar className="h-12 w-12">
+              <AvatarFallback className="pointer-events-none bg-gradient-to-br from-purple-500 to-secondary-100 text-xl capitalize">
+                U
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+              <div className="flex flex-row items-center space-x-2">
+                <h1 className="text-emerald-400">User 1</h1>
+                <h2 className="text-xs text-neutral-400">
+                  {formatTimestamp(msg.created_date)}
+                </h2>
+              </div>
+              <p className="text-white">{msg.content}</p>
+            </div>
+          </div>
+        </div>
       ))}
     </ScrollArea>
   );
