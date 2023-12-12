@@ -15,13 +15,7 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 import { formatTimestamp } from "@/lib/date-converter";
 import { getUserProfile } from "@/service/user-service";
 
-const DirectMessageChat = ({
-  channelId,
-  userId,
-}: {
-  channelId: number;
-  userId: number | undefined;
-}) => {
+const DirectMessageChat = ({ channelId }: { channelId: number }) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<MessageResponse[]>([]);
   const [sender, setSender] = useState<UserProfile | null>(null);
@@ -97,8 +91,8 @@ const DirectMessageChat = ({
   };
 
   return (
-    <div className="flex h-full flex-col">
-      <ScrollArea className="h-full">
+    <ScrollArea className="max-h-full flex-grow overflow-y-auto">
+      <div className="mb-12">
         {messages &&
           messages.map((msg) => (
             <div key={msg.message_id}>
@@ -117,13 +111,13 @@ const DirectMessageChat = ({
                       {formatTimestamp(msg.created_date)}
                     </h2>
                   </div>
-                  <p className=" font-light text-neutral-300">{msg.content}</p>
+                  <p className="font-light text-neutral-300">{msg.content}</p>
                 </div>
               </div>
             </div>
           ))}
-      </ScrollArea>
-      <div className="bottom-0 left-0 right-0 z-50 flex flex-row space-x-4 bg-primary-500">
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 z-50 flex flex-row space-x-4">
         <input
           placeholder="Message"
           className="flex-grow rounded-md bg-primary-500 p-2 text-white outline-none"
@@ -138,7 +132,7 @@ const DirectMessageChat = ({
           Send
         </button>
       </div>
-    </div>
+    </ScrollArea>
   );
 };
 

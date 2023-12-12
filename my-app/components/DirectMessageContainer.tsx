@@ -18,6 +18,8 @@ const DirectMessageContainer = ({ channelId }: { channelId: number }) => {
     const fetchData = async () => {
       try {
         const data = await getDmChannelWithId(instance, channelId);
+
+        // TODO - This is a workaround. The friend could be either the creator or the participant.
         const friend = await getFriendById(instance, data.participant_id);
         setFriend(friend);
         setChannel(data);
@@ -37,7 +39,7 @@ const DirectMessageContainer = ({ channelId }: { channelId: number }) => {
       {error ? (
         <div className="text-red-500">{error}</div>
       ) : (
-        <DirectMessageChat channelId={channelId} userId={channel?.creator_id} />
+        <DirectMessageChat channelId={channelId} />
       )}
     </div>
   );
