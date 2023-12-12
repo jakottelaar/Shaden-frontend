@@ -6,7 +6,6 @@ import { Separator } from "./ui/separator";
 import { getDmChannelWithId } from "@/service/channel-service";
 import { Channel, Friend } from "@/types/types";
 import { getFriendById } from "@/service/friend-service";
-import { useAuth } from "./AuthProvider";
 import { axiosInstance } from "@/lib/axios-service";
 
 const DirectMessageContainer = ({ channelId }: { channelId: number }) => {
@@ -38,7 +37,7 @@ const DirectMessageContainer = ({ channelId }: { channelId: number }) => {
       {error ? (
         <div className="text-red-500">{error}</div>
       ) : (
-        <DirectMessageChat />
+        <DirectMessageChat channelId={channelId} userId={channel?.creator_id} />
       )}
     </div>
   );
