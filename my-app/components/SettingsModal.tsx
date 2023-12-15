@@ -33,7 +33,7 @@ const SettingsModal = () => {
         </svg>
       </DialogTrigger>
 
-      <DialogContent className="h-[800px] w-[1200px] border-none bg-primary-300 p-0">
+      <DialogContent className="h-[800px] w-[1200px] border-none bg-primary-300 p-0 md:h-[600px] md:w-[800px]">
         <div className="flex flex-row">
           <div className=" w-1/4 rounded-l-lg bg-primary-700 p-2">
             <div>
