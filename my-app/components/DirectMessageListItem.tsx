@@ -1,11 +1,19 @@
 import { Channel, Friend } from "@/types/types";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { getFriendById } from "@/service/friend-service";
 import { axiosInstance } from "@/lib/axios-service";
 import { useRouter } from "next/navigation";
 
-const DirectMessageListItem = ({ channel }: { channel: Channel }) => {
+const DirectMessageListItem = ({
+  channel,
+  selectedOption,
+  setSelectedOption,
+}: {
+  channel: Channel;
+  selectedOption: string;
+  setSelectedOption: Dispatch<SetStateAction<string>>;
+}) => {
   const [friend, setFriend] = useState<Friend | null>();
   const instance = axiosInstance();
   const router = useRouter();
@@ -24,11 +32,16 @@ const DirectMessageListItem = ({ channel }: { channel: Channel }) => {
   };
 
   const navigateToChannel = () => {
+    setSelectedOption(channel.channel_id.toString());
     router.push(`/channels/${channel.channel_id}`);
   };
 
   return (
-    <div className="mb-2 rounded-lg p-1 transition-all duration-300 hover:bg-primary-100">
+    <div
+      className={`mb-2 rounded-lg p-1 transition-all duration-300 hover:bg-primary-100 ${
+        selectedOption === channel.channel_id.toString() ? "bg-primary-100" : ""
+      }`}
+    >
       <button
         onClick={navigateToChannel}
         className="flex w-full flex-row items-center space-x-2"

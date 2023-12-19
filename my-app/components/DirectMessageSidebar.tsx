@@ -5,11 +5,13 @@ import { getAllDirectMessageChannels } from "@/service/channel-service";
 import DirectMessageListItem from "./DirectMessageListItem";
 import { Channel } from "@/types/types";
 import { axiosInstance } from "@/lib/axios-service";
+import { useRouter } from "next/navigation";
 
 const DirectMessageSidebar = () => {
   const [selectedOption, setSelectedOption] = useState("Friends");
   const [channels, setChannels] = useState<Channel[]>([]);
   const instance = axiosInstance();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchChannels = async () => {
@@ -23,6 +25,11 @@ const DirectMessageSidebar = () => {
     fetchChannels();
   }, []);
 
+  const navigateToFriendsOverview = () => {
+    setSelectedOption("Friends");
+    router.push("/channels");
+  };
+
   return (
     <div className="flex h-screen flex-col bg-primary-500 p-2">
       <input
@@ -31,7 +38,7 @@ const DirectMessageSidebar = () => {
       />
       <Separator className="my-4 bg-black" />
       <button
-        onClick={() => setSelectedOption("Friends")}
+        onClick={() => navigateToFriendsOverview()}
         className={`flex items-center rounded-md p-2 text-white transition-all duration-300 hover:bg-primary-100 ${
           selectedOption === "Friends" ? "bg-primary-100" : ""
         }`}
@@ -55,7 +62,12 @@ const DirectMessageSidebar = () => {
 
       <h1 className="mt-6 text-sm text-white">Direct messages</h1>
       {channels.map((channel: Channel) => (
-        <DirectMessageListItem key={channel.channel_id} channel={channel} />
+        <DirectMessageListItem
+          key={channel.channel_id}
+          channel={channel}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+        />
       ))}
     </div>
   );
