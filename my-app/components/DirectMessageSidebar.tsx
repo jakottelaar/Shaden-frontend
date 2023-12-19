@@ -4,30 +4,24 @@ import { Separator } from "./ui/separator";
 import { getAllDirectMessageChannels } from "@/service/channel-service";
 import DirectMessageListItem from "./DirectMessageListItem";
 import { Channel } from "@/types/types";
+import { axiosInstance } from "@/lib/axios-service";
 
 const DirectMessageSidebar = () => {
   const [selectedOption, setSelectedOption] = useState("Friends");
-  // const [channels, setChannels] = useState<Channel[]>([]);
+  const [channels, setChannels] = useState<Channel[]>([]);
+  const instance = axiosInstance();
 
-  // useEffect(() => {
-  //   const fetchChannels = async () => {
-  //     try {
-  //       const channels = await getAllDirectMessageChannels(axios);
-  //       setChannels(channels);
-  //     } catch (error) {
-  //       console.error("Error fetching channels:", error);
-  //     }
-  //   };
-  //   fetchChannels();
-  // }, [axios, channels]);
-
-  const channels = [
-    {
-      channel_id: 1,
-      creator_id: 1,
-      participant_id: 2,
-    },
-  ];
+  useEffect(() => {
+    const fetchChannels = async () => {
+      try {
+        const results = await getAllDirectMessageChannels(instance);
+        setChannels(results);
+      } catch (error) {
+        console.error("Error fetching channels:", error);
+      }
+    };
+    fetchChannels();
+  }, []);
 
   return (
     <div className="flex h-screen flex-col bg-primary-500 p-2">

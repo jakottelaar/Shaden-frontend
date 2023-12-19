@@ -104,15 +104,24 @@ export const removeFriend = async (axios: AxiosInstance, userId: number) => {
 
 export const getFriendById = async (
   axios: AxiosInstance,
-  userId: number,
+  creatorId: number | undefined,
+  participantId: number,
 ): Promise<Friend> => {
   try {
-    const response = await axios.get(`/api/friends/${userId}`);
+    const response = await axios.get(`/api/friends/${creatorId}`);
 
     const result = response.data.results as Friend;
 
     return result;
   } catch (error: any) {
+    //Todo: Fix this hacky solution
+    if (error.response.status === 500) {
+      const response = await axios.get(`/api/friends/${participantId}`);
+
+      const result = response.data.results as Friend;
+
+      return result;
+    }
     console.error(error);
     return error.response.data;
   }
