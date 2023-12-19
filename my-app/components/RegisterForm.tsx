@@ -5,7 +5,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { registerApi } from "@/service/auth-service";
+import { useAuth } from "./AuthProvider";
 
 const registerSchema = z.object({
   username: z.string({ required_error: "Username is required" }).min(1),
@@ -19,6 +20,7 @@ type registerValidation = z.infer<typeof registerSchema>;
 
 const RegisterForm = () => {
   const router = useRouter();
+  const { accessToken, setToken } = useAuth();
 
   const {
     register,
@@ -41,13 +43,15 @@ const RegisterForm = () => {
     email: string,
     password: string,
   ) => {
-    signIn("register", {
-      username,
-      email,
-      password,
-      redirect: true,
-      callbackUrl: "/channels",
-    });
+    try {
+      const response = await registerApi(username, email, password);
+
+      setToken(response);
+
+      router.push("/channels");
+    } catch (error) {
+      throw new Error("Something went wrong");
+    }
   };
 
   return (

@@ -28,6 +28,7 @@ const FriendsOverviewNavbar = ({
         Friends
       </h1>
       <button
+        onClick={() => setSelectedOption("Online")}
         className={`rounded-md px-3 py-1 transition-all duration-300 hover:bg-primary-1000 ${
           selectedOption === "Online" ? "bg-primary-1000" : ""
         }`}

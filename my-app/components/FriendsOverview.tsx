@@ -6,7 +6,8 @@ import {
   getAllFriends,
   getPendingFriendRequests,
 } from "@/service/friend-service";
-import useAxios from "@/lib/hooks/useAxios";
+import { axiosInstance } from "@/lib/axios-service";
+import { useAuth } from "./AuthProvider";
 
 const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   const [friendList, setFriendList] = useState<Friend[]>([]);
@@ -15,22 +16,23 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   );
   const [amountOfUsers, setAmountOfUsers] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const axios = useAxios();
+
+  const instance = axiosInstance();
 
   useEffect(() => {
     const fetchFunctions: Record<
       string,
       () => Promise<Friend[] | PendingFriend[]>
     > = {
-      All: () => getAllFriends(axios),
-      Pending: () => getPendingFriendRequests(axios),
+      Online: () => getAllFriends(instance),
+      All: () => getAllFriends(instance),
+      Pending: () => getPendingFriendRequests(instance),
     };
 
     const fetchData = async () => {
       try {
         if (selectedOption in fetchFunctions) {
           const data = await fetchFunctions[selectedOption]();
-          console.log(data);
 
           if (selectedOption === "Pending") {
             setPendingFriendList(data as PendingFriend[]);
@@ -51,13 +53,10 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   }, [selectedOption]);
 
   const onUpdatePendingRequests = (requestId: number) => {
-    console.log("onUpdatePendingRequests" + requestId);
-
     const updatedList = pendingFriendList.filter((request) => {
       return request.requestId !== requestId;
     });
 
-    console.log(updatedList);
     setAmountOfUsers(updatedList.length);
     setPendingFriendList(updatedList);
   };

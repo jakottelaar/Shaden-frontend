@@ -7,8 +7,6 @@ import UserProfileModal from "./UserProfileModal";
 import DmChatButton from "./DmChatButton";
 
 const FriendListItem = ({ friend }: { friend: Friend }) => {
-  console.log(friend);
-
   return (
     <div>
       <Separator className="my-2 bg-stone-500" />

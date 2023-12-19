@@ -6,7 +6,8 @@ import {
   cancelOutgoingFriendRequest,
   rejectIncomingFriendRequest,
 } from "@/service/friend-service";
-import useAxios from "@/lib/hooks/useAxios";
+import { useAuth } from "./AuthProvider";
+import { axiosInstance } from "@/lib/axios-service";
 
 const PendingFriendRequestListItem = ({
   request,
@@ -15,25 +16,25 @@ const PendingFriendRequestListItem = ({
   request: PendingFriend;
   onUpdatePendingRequests: (requestId: number) => void;
 }) => {
-  const axios = useAxios();
+  const instance = axiosInstance();
 
   const handleAcceptIncomingFriendRequest = () => async () => {
     try {
-      acceptFriendRequest(axios, request.friendId);
+      acceptFriendRequest(instance, request.friendId);
       onUpdatePendingRequests(request.requestId);
     } catch (error) {}
   };
 
   const handleRejectIncomingFriendRequest = () => async () => {
     try {
-      rejectIncomingFriendRequest(axios, request.friendId);
+      rejectIncomingFriendRequest(instance, request.friendId);
       onUpdatePendingRequests(request.requestId);
     } catch (error) {}
   };
 
   const handleCancelFriendRequest = () => async () => {
     try {
-      cancelOutgoingFriendRequest(axios, request.friendId);
+      cancelOutgoingFriendRequest(instance, request.friendId);
       onUpdatePendingRequests(request.requestId);
     } catch (error) {}
   };

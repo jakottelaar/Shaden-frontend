@@ -1,3 +1,4 @@
+"use client";
 import DirectMessageSidebar from "@/components/DirectMessageSidebar";
 import NavigationSidebar from "@/components/NavigationSidebar";
 import { ReactNode } from "react";
