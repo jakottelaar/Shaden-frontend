@@ -2,8 +2,9 @@ import { Channel, Friend } from "@/types/types";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { getFriendById } from "@/service/friend-service";
-import { axiosInstance } from "@/lib/axios-service";
+import { ApiInstance } from "@/lib/axios-service";
 import { useRouter } from "next/navigation";
+import { useAuth } from "./AuthProvider";
 
 const DirectMessageListItem = ({
   channel,
@@ -15,21 +16,27 @@ const DirectMessageListItem = ({
   setSelectedOption: Dispatch<SetStateAction<string>>;
 }) => {
   const [friend, setFriend] = useState<Friend | null>();
-  const instance = axiosInstance();
   const router = useRouter();
 
+  const { accessToken, updateToken } = useAuth();
+
   useEffect(() => {
+    const apiInstance = ApiInstance(accessToken, updateToken);
+
+    const fetchFriend = async () => {
+      try {
+        const result = await getFriendById(
+          apiInstance,
+          channel.creator_id,
+          channel.participant_id,
+        );
+        setFriend(result);
+      } catch (error) {
+        console.error("Error fetching friend data:", error);
+      }
+    };
     fetchFriend();
   }, [channel]);
-
-  const fetchFriend = async () => {
-    const friend = await getFriendById(
-      instance,
-      channel.creator_id,
-      channel.participant_id,
-    );
-    setFriend(friend);
-  };
 
   const navigateToChannel = () => {
     setSelectedOption(channel.channel_id.toString());

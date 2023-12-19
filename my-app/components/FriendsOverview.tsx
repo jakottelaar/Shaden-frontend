@@ -6,7 +6,7 @@ import {
   getAllFriends,
   getPendingFriendRequests,
 } from "@/service/friend-service";
-import { axiosInstance } from "@/lib/axios-service";
+import { ApiInstance } from "@/lib/axios-service";
 import { useAuth } from "./AuthProvider";
 
 const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
@@ -16,17 +16,18 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
   );
   const [amountOfUsers, setAmountOfUsers] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const instance = axiosInstance();
+  const { accessToken, updateToken } = useAuth();
 
   useEffect(() => {
+    const apiInstance = ApiInstance(accessToken, updateToken);
+
     const fetchFunctions: Record<
       string,
       () => Promise<Friend[] | PendingFriend[]>
     > = {
-      Online: () => getAllFriends(instance),
-      All: () => getAllFriends(instance),
-      Pending: () => getPendingFriendRequests(instance),
+      Online: () => getAllFriends(apiInstance),
+      All: () => getAllFriends(apiInstance),
+      Pending: () => getPendingFriendRequests(apiInstance),
     };
 
     const fetchData = async () => {
@@ -88,13 +89,11 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
       </h1>
       {selectedOption === "Pending" ? (
         filteredPendingFriends.map((request) => (
-          <div>
-            <PendingFriendRequestListItem
-              key={(request as PendingFriend).requestId}
-              request={request as PendingFriend}
-              onUpdatePendingRequests={onUpdatePendingRequests}
-            />
-          </div>
+          <PendingFriendRequestListItem
+            key={(request as PendingFriend).requestId}
+            request={request as PendingFriend}
+            onUpdatePendingRequests={onUpdatePendingRequests}
+          />
         ))
       ) : (
         <div className="space-y-2">

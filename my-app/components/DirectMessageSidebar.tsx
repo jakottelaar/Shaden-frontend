@@ -4,19 +4,23 @@ import { Separator } from "./ui/separator";
 import { getAllDirectMessageChannels } from "@/service/channel-service";
 import DirectMessageListItem from "./DirectMessageListItem";
 import { Channel } from "@/types/types";
-import { axiosInstance } from "@/lib/axios-service";
+import { ApiInstance } from "@/lib/axios-service";
 import { useRouter } from "next/navigation";
+import { useAuth } from "./AuthProvider";
 
 const DirectMessageSidebar = () => {
   const [selectedOption, setSelectedOption] = useState("Friends");
   const [channels, setChannels] = useState<Channel[]>([]);
-  const instance = axiosInstance();
   const router = useRouter();
 
+  const { accessToken, updateToken } = useAuth();
+
   useEffect(() => {
+    const apiInstance = ApiInstance(accessToken, updateToken);
+
     const fetchChannels = async () => {
       try {
-        const results = await getAllDirectMessageChannels(instance);
+        const results = await getAllDirectMessageChannels(apiInstance);
         setChannels(results);
       } catch (error) {
         console.error("Error fetching channels:", error);

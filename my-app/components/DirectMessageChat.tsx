@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import {
   Channel,
@@ -10,7 +10,7 @@ import stomp from "stompjs";
 import SockJS from "sockjs-client";
 import { useAuth } from "./AuthProvider";
 import { getChannelMessagingHistory } from "@/service/messaging-service";
-import { axiosInstance } from "@/lib/axios-service";
+import { ApiInstance } from "@/lib/axios-service";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { formatTimestamp } from "@/lib/date-converter";
 import { getUserProfile } from "@/service/user-service";
@@ -20,17 +20,23 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
   const [messages, setMessages] = useState<MessageResponse[]>([]);
   const [sender, setSender] = useState<UserProfile | null>(null);
 
-  const instance = axiosInstance();
-  const { accessToken } = useAuth();
+  const { accessToken, updateToken } = useAuth();
 
-  const socket = new SockJS("http://localhost:8080/ws", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const socket = useMemo(
+    () =>
+      new SockJS("http://localhost:8080/ws", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    [accessToken],
+  );
+
   let stompClient = stomp.over(socket);
 
   useEffect(() => {
+    const apiInstance = ApiInstance(accessToken, updateToken);
+
     socket.onopen = () => {
       console.log("Socket connected");
     };
@@ -44,13 +50,33 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
       });
     });
 
+    const fetchMessageHistory = async () => {
+      try {
+        const data = await getChannelMessagingHistory(apiInstance, channelId);
+        console.log(data);
+
+        setMessages(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    const fetchSender = async () => {
+      try {
+        const response = await getUserProfile(apiInstance);
+        setSender(response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     fetchSender();
     fetchMessageHistory();
 
     return () => {
       stompClient.disconnect;
     };
-  }, []);
+  }, [channelId]);
 
   const sendMessage = () => {
     const messageRequest: MessageRequest = {
@@ -67,26 +93,6 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
   const handleKeyPress = (e: any) => {
     if (e.key === "Enter") {
       sendMessage();
-    }
-  };
-
-  const fetchMessageHistory = async () => {
-    try {
-      const data = await getChannelMessagingHistory(instance, channelId);
-      console.log(data);
-
-      setMessages(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const fetchSender = async () => {
-    try {
-      const response = await getUserProfile(instance);
-      setSender(response);
-    } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 
