@@ -2,6 +2,14 @@ import { render, screen, fireEvent, act } from '@testing-library/react'
 import LoginForm from "../components/LoginForm";
 import '@testing-library/jest-dom/jest-globals';
 
+jest.mock("next/navigation", () => ({
+    useRouter() {
+        return {
+            prefetch: () => null
+        };
+    }
+}));
+
 describe('LoginForm', () => {
     it('renders a login form', () => {
         render(<LoginForm />)
