@@ -50,6 +50,7 @@ const AccountSettings = () => {
       </button>
       <Separator className="bg-black" />
       <button
+        data-testid="logout-button"
         className="w-fit rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500"
         onClick={logoutUser}
       >

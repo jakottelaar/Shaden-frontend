@@ -64,6 +64,7 @@ const RegisterForm = () => {
       </h1>
       <label className="text-white">Username</label>
       <input
+        data-testid="username-input"
         type="text"
         className={`mb-4 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
           errors.username
@@ -74,6 +75,7 @@ const RegisterForm = () => {
       />
       <label className="text-white">Email</label>
       <input
+        data-testid="email-input"
         type="email"
         className={`mb-4 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
           errors.email
@@ -84,6 +86,7 @@ const RegisterForm = () => {
       />
       <label className="text-white">Password</label>
       <input
+        data-testid="password-input"
         type="password"
         className={`mb-4 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
           errors.password
@@ -93,6 +96,7 @@ const RegisterForm = () => {
         {...register("password")}
       />
       <button
+        data-testid="register-button"
         className="mt-4 rounded-md bg-secondary-100 py-2 text-white transition-all duration-300 hover:bg-secondary-500"
         type="submit"
       >

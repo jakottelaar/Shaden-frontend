@@ -11,7 +11,10 @@ const SettingsModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="group relative mt-auto flex h-12 w-12 items-center justify-center rounded-3xl bg-primary-100 transition-all duration-200 ease-linear hover:rounded-2xl hover:bg-white">
+      <DialogTrigger
+        className="group relative mt-auto flex h-12 w-12 items-center justify-center rounded-3xl bg-primary-100 transition-all duration-200 ease-linear hover:rounded-2xl hover:bg-white"
+        data-testid="settings-modal-button"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
