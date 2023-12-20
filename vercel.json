@@ -4,5 +4,8 @@
   "github": {
     "enabled": false
   },
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
+  ]
 }
