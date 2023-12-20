@@ -30,8 +30,6 @@ jobs:
       - name: Build with Next.js
         run: npm run build
 
-      - name: checkout
-        uses: actions/checkout@v4
       - name: Deploy with Vercel
         uses: amondnet/vercel-action@v25.1.1
         with:
