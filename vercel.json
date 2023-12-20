@@ -3,5 +3,6 @@
   "public": false,
   "github": {
     "enabled": false
-  }
+  },
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
