@@ -1,4 +1,4 @@
-describe("template spec", () => {
+describe("Authentication tests", () => {
   it("Successfully register account, navigate to channels page and logout", () => {
     cy.visit("/register");
 

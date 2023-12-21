@@ -23,6 +23,7 @@ const UserProfileModal = ({
   const handleRemoveFriend = () => {
     try {
       removeFriend(apiInstance, friend.friendId);
+      setOpen(false);
     } catch (error) {
       console.error(error);
     }
@@ -30,7 +31,7 @@ const UserProfileModal = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger data-testid="friend-user-profile-modal-button">
         <div className="group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300 hover:bg-neutral-800">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -59,6 +60,7 @@ const UserProfileModal = ({
             Send Message
           </button>
           <button
+            data-testid="remove-friend-button"
             className="duration:300 rounded-md bg-red-600 p-2 text-white transition-all hover:bg-red-800"
             onClick={handleRemoveFriend}
           >

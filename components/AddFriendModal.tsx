@@ -40,13 +40,17 @@ const AddFriendModal = () => {
 
   return (
     <Dialog onOpenChange={resetDialog}>
-      <DialogTrigger className="rounded-md bg-secondary-100 p-1 transition-all duration-300 hover:bg-secondary-700">
+      <DialogTrigger
+        className="rounded-md bg-secondary-100 p-1 transition-all duration-300 hover:bg-secondary-700"
+        data-testid="add-friend-modal-button"
+      >
         Add a friend
       </DialogTrigger>
       <DialogContent className="top-48 w-[800px] border-none bg-primary-1000">
         <div className="flex flex-col space-y-4 p-4">
           <h1 className="text-white">Add a friend with their username</h1>
           <input
+            data-testid="add-friend-modal-input"
             className={`rounded-md border bg-primary-100 px-2 py-1 text-white outline-none ${
               responseMessage === "Friend request sent successfully"
                 ? "border-green-500"
@@ -57,6 +61,7 @@ const AddFriendModal = () => {
             onChange={(e) => setFriendUsername(e.target.value)}
           />
           <button
+            data-testid="add-friend-modal-send-button"
             className="w-fit rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500"
             onClick={handleFriendRequest}
           >
@@ -64,6 +69,7 @@ const AddFriendModal = () => {
           </button>
           <div className="text-6 h-6 overflow-hidden transition-opacity">
             <p
+              data-testid="add-friend-modal-response"
               className={`${
                 responseMessage
                   ? responseMessage === "Friend request sent successfully"
