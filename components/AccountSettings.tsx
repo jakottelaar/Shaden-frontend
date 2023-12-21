@@ -6,6 +6,7 @@ import { ApiInstance } from "@/lib/axios-service";
 import { useAuth } from "./AuthProvider";
 import { logout } from "@/service/auth-service";
 import { useRouter } from "next/navigation";
+import DeleteAccountModal from "./DeleteAccountModal";
 
 interface User {
   email: string;
@@ -49,7 +50,7 @@ const AccountSettings = () => {
       <button className="w-fit rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500">
         Change password
       </button>
-      <Separator className="bg-black" />
+      <Separator className="bg-white" />
       <button
         data-testid="logout-button"
         className="w-fit rounded-md bg-secondary-100 p-2 text-white transition-all duration-300 hover:bg-secondary-500"
@@ -57,10 +58,8 @@ const AccountSettings = () => {
       >
         logout
       </button>
-      <Separator className="bg-black" />
-      <button className="duration:300 w-fit rounded-md bg-red-600 p-2 text-white transition-all hover:bg-red-700">
-        Delete Account
-      </button>
+      <Separator className="bg-white" />
+      <DeleteAccountModal />
     </div>
   );
 };
