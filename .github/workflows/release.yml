@@ -9,7 +9,7 @@ on:
       - release
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
