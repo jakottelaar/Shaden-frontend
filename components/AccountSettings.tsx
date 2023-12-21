@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { getUserProfile } from "@/service/user-service";
 import { Separator } from "./ui/separator";
-import { axiosInstance } from "@/lib/axios-service";
+import { ApiInstance } from "@/lib/axios-service";
 import { useAuth } from "./AuthProvider";
 import { logout } from "@/service/auth-service";
 import { useRouter } from "next/navigation";
@@ -14,12 +14,13 @@ interface User {
 
 const AccountSettings = () => {
   const [userData, setUserData] = useState({} as User | null);
-  const { updateToken } = useAuth();
-  const instance = axiosInstance();
+  const { accessToken, updateToken } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    getUserProfile(instance).then((res) => {
+    const apiInstance = ApiInstance(accessToken, updateToken);
+
+    getUserProfile(apiInstance).then((res) => {
       setUserData(res);
     });
   }, []);

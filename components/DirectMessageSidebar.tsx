@@ -4,30 +4,35 @@ import { Separator } from "./ui/separator";
 import { getAllDirectMessageChannels } from "@/service/channel-service";
 import DirectMessageListItem from "./DirectMessageListItem";
 import { Channel } from "@/types/types";
+import { ApiInstance } from "@/lib/axios-service";
+import { useRouter } from "next/navigation";
+import { useAuth } from "./AuthProvider";
 
 const DirectMessageSidebar = () => {
   const [selectedOption, setSelectedOption] = useState("Friends");
-  // const [channels, setChannels] = useState<Channel[]>([]);
+  const [channels, setChannels] = useState<Channel[]>([]);
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   const fetchChannels = async () => {
-  //     try {
-  //       const channels = await getAllDirectMessageChannels(axios);
-  //       setChannels(channels);
-  //     } catch (error) {
-  //       console.error("Error fetching channels:", error);
-  //     }
-  //   };
-  //   fetchChannels();
-  // }, [axios, channels]);
+  const { accessToken, updateToken } = useAuth();
 
-  const channels = [
-    {
-      channel_id: 1,
-      creator_id: 1,
-      participant_id: 2,
-    },
-  ];
+  useEffect(() => {
+    const apiInstance = ApiInstance(accessToken, updateToken);
+
+    const fetchChannels = async () => {
+      try {
+        const results = await getAllDirectMessageChannels(apiInstance);
+        setChannels(results);
+      } catch (error) {
+        console.error("Error fetching channels:", error);
+      }
+    };
+    fetchChannels();
+  }, []);
+
+  const navigateToFriendsOverview = () => {
+    setSelectedOption("Friends");
+    router.push("/channels");
+  };
 
   return (
     <div className="flex h-screen flex-col bg-primary-500 p-2">
@@ -37,7 +42,7 @@ const DirectMessageSidebar = () => {
       />
       <Separator className="my-4 bg-black" />
       <button
-        onClick={() => setSelectedOption("Friends")}
+        onClick={() => navigateToFriendsOverview()}
         className={`flex items-center rounded-md p-2 text-white transition-all duration-300 hover:bg-primary-100 ${
           selectedOption === "Friends" ? "bg-primary-100" : ""
         }`}
@@ -61,7 +66,12 @@ const DirectMessageSidebar = () => {
 
       <h1 className="mt-6 text-sm text-white">Direct messages</h1>
       {channels.map((channel: Channel) => (
-        <DirectMessageListItem key={channel.channel_id} channel={channel} />
+        <DirectMessageListItem
+          key={channel.channel_id}
+          channel={channel}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+        />
       ))}
     </div>
   );

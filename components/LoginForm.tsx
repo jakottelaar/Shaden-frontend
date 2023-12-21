@@ -97,7 +97,7 @@ const LoginForm = () => {
             Log in
           </button>
           <div className="text-sm">
-            <span className="me-2 text-white">Don't have an account?</span>
+            <span className="me-2 text-white">Don&apos;t have an account?</span>
             <Link
               data-testid="register-link"
               className="cursor-pointer text-cyan-500 hover:underline"

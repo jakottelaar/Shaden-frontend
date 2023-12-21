@@ -21,7 +21,7 @@ const SettingsModal = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="white"
-          className="h-8 w-8 transition-all duration-200 hover:stroke-secondary-100"
+          className="h-8 w-8 transition-all duration-200 group-hover:stroke-secondary-100"
         >
           <path
             strokeLinecap="round"

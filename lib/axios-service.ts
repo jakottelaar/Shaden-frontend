@@ -1,9 +1,9 @@
-import { useAuth } from "@/components/AuthProvider";
 import axios, { AxiosInstance } from "axios";
 
-export const axiosInstance = (): AxiosInstance => {
-  const { accessToken, updateToken } = useAuth();
-
+export const ApiInstance = (
+  accessToken: string | null,
+  updateToken: (token: string | null) => void,
+): AxiosInstance => {
   const api = axios.create({
     baseURL: process.env.API_BASE_URL,
     withCredentials: true,
@@ -12,9 +12,8 @@ export const axiosInstance = (): AxiosInstance => {
   api.interceptors.request.use(
     (config) => {
       if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
+        config.headers["Authorization"] = "Bearer " + accessToken;
       }
-
       return config;
     },
     (error) => {
@@ -42,7 +41,6 @@ export const axiosInstance = (): AxiosInstance => {
           if (response.status === 200) {
             const accessToken = response.data.results.access_token;
             updateToken(accessToken);
-
             api.defaults.headers.common["Authorization"] =
               "Bearer " + accessToken;
             originalRequest.headers["Authorization"] = "Bearer " + accessToken;

@@ -6,21 +6,29 @@ import { Separator } from "./ui/separator";
 import { getDmChannelWithId } from "@/service/channel-service";
 import { Channel, Friend } from "@/types/types";
 import { getFriendById } from "@/service/friend-service";
-import { axiosInstance } from "@/lib/axios-service";
+import { ApiInstance } from "@/lib/axios-service";
+import { useAuth } from "./AuthProvider";
 
 const DirectMessageContainer = ({ channelId }: { channelId: number }) => {
   const [friend, setFriend] = useState<Friend | null>(null);
   const [channel, setChannel] = useState<Channel | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const instance = axiosInstance();
+
+  const { accessToken, updateToken } = useAuth();
 
   useEffect(() => {
+    const apiInstance = ApiInstance(accessToken, updateToken);
+
     const fetchData = async () => {
       try {
-        const data = await getDmChannelWithId(instance, channelId);
+        const data = await getDmChannelWithId(apiInstance, channelId);
 
         // TODO - This is a workaround. The friend could be either the creator or the participant.
-        const friend = await getFriendById(instance, data.participant_id);
+        const friend = await getFriendById(
+          apiInstance,
+          data.creator_id,
+          data.participant_id,
+        );
         setFriend(friend);
         setChannel(data);
       } catch (error) {

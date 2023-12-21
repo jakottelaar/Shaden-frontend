@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Friend } from "@/types/types";
 import { removeFriend } from "@/service/friend-service";
 import { useAuth } from "./AuthProvider";
-import { axiosInstance } from "@/lib/axios-service";
+import { ApiInstance } from "@/lib/axios-service";
 
 const UserProfileModal = ({
   openModal,
@@ -13,7 +13,8 @@ const UserProfileModal = ({
   friend: Friend;
 }) => {
   const [open, setOpen] = useState(false);
-  const instance = axiosInstance();
+  const { accessToken, updateToken } = useAuth();
+  const apiInstance = ApiInstance(accessToken, updateToken);
 
   useEffect(() => {
     setOpen(openModal);
@@ -21,7 +22,7 @@ const UserProfileModal = ({
 
   const handleRemoveFriend = () => {
     try {
-      removeFriend(instance, friend.friendId);
+      removeFriend(apiInstance, friend.friendId);
     } catch (error) {
       console.error(error);
     }

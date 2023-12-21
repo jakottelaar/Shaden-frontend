@@ -1,15 +1,17 @@
 import { useRouter } from "next/navigation";
 import React from "react";
 import { getChannelByUserId } from "@/service/channel-service";
-import { axiosInstance } from "@/lib/axios-service";
+import { ApiInstance } from "@/lib/axios-service";
+import { useAuth } from "./AuthProvider";
 
 const DmChatButton = ({ friendId }: { friendId: number }) => {
   const router = useRouter();
-  const instance = axiosInstance();
+  const { accessToken, updateToken } = useAuth();
+  const apiInstance = ApiInstance(accessToken, updateToken);
 
   const openDirectMessage = async () => {
     try {
-      const channel = await getChannelByUserId(instance, friendId);
+      const channel = await getChannelByUserId(apiInstance, friendId);
       router.push(`/channels/${channel.channel_id}`);
     } catch (error: any) {
       if (error.response.status === 404) {
