@@ -12,7 +12,7 @@ export const getUserProfile = async (axios: AxiosInstance) => {
 export const deleteUserAccount = async (axios: AxiosInstance) => {
   try {
     const response = await axios.delete("/api/users/profile");
-    return response.data.results;
+    return response.data;
   } catch (error) {
     console.error(error);
   }

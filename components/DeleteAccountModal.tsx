@@ -14,8 +14,9 @@ const DeleteAccountModal = () => {
   const handleAccountDelete = async () => {
     try {
       const response = await deleteUserAccount(apiInstance);
-      updateToken(null);
+
       if (response.status === 200) {
+        updateToken(null);
         router.push("/login");
       }
     } catch (error) {}
@@ -23,7 +24,10 @@ const DeleteAccountModal = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="duration:300 flex w-fit justify-start rounded-md bg-red-600 p-2 text-white transition-all hover:bg-red-800">
+      <DialogTrigger
+        className="duration:300 flex w-fit justify-start rounded-md bg-red-600 p-2 text-white transition-all hover:bg-red-800"
+        data-testid="delete-account-modal-button"
+      >
         Delete Account
       </DialogTrigger>
       <DialogContent className="flex w-fit flex-col items-center justify-center border-none bg-primary-1000 text-center">
@@ -37,6 +41,7 @@ const DeleteAccountModal = () => {
           <button
             className="duration:300 w-1/2 rounded-md bg-red-600 p-2 text-white transition-all hover:bg-red-800"
             onClick={handleAccountDelete}
+            data-testid="delete-account-confirm-button"
           >
             Delete Account
           </button>
