@@ -25,7 +25,7 @@ module.exports = {
         primary: {
           "1000": "#1C1C1C", // Darker shade
           "700": "#242424",  // Slightly lighter
-          "500": "#2A2A2A",  // Base color
+          "500": "#27282A",  // Base color
           "300": "#303030",  // Slightly lighter
           "100": "#313338",  // Lighter shade
         },

@@ -36,6 +36,7 @@ const FriendsOverviewNavbar = ({
         Online
       </button>
       <button
+        data-testid="all-friends-button"
         onClick={() => setSelectedOption("All")}
         className={`rounded-md p-1 px-4 transition-all duration-300 hover:bg-primary-1000 ${
           selectedOption === "All" ? "bg-primary-1000" : ""
@@ -44,6 +45,7 @@ const FriendsOverviewNavbar = ({
         All
       </button>
       <button
+        data-testid="pending-friends-button"
         onClick={() => setSelectedOption("Pending")}
         className={`rounded-md px-3 py-1 transition-all duration-300 hover:bg-primary-1000 ${
           selectedOption === "Pending" ? "bg-primary-1000" : ""

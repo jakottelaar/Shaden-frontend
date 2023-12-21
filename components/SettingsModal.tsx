@@ -11,7 +11,10 @@ const SettingsModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="group relative mt-auto flex h-12 w-12 items-center justify-center rounded-3xl bg-primary-100 transition-all duration-200 ease-linear hover:rounded-2xl hover:bg-white">
+      <DialogTrigger
+        className="group relative mt-auto flex h-12 w-12 items-center justify-center rounded-3xl bg-primary-100 transition-all duration-200 ease-linear hover:rounded-2xl hover:bg-white"
+        data-testid="settings-modal-button"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -33,7 +36,7 @@ const SettingsModal = () => {
         </svg>
       </DialogTrigger>
 
-      <DialogContent className="h-[800px] w-[1200px] border-none bg-primary-300 p-0 md:h-[600px] md:w-[800px]">
+      <DialogContent className="border-none bg-primary-300 p-0 md:h-[600px] md:w-[800px] lg:h-[800px] lg:w-[1200px]">
         <div className="flex flex-row">
           <div className=" w-1/4 rounded-l-lg bg-primary-700 p-2">
             <div>

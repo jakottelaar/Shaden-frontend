@@ -54,6 +54,7 @@ const LoginForm = () => {
 
   return (
     <form
+      data-testid="login-form"
       className="w-[800px] rounded-lg bg-primary-100 shadow-2xl"
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -65,6 +66,7 @@ const LoginForm = () => {
           <label className="text-sm text-white">Email</label>
           <input
             id="email"
+            data-testid="email-input"
             className={`mb-2 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
               errors.email
                 ? "border border-red-500 transition-all duration-500"
@@ -76,6 +78,7 @@ const LoginForm = () => {
           <input
             id="password"
             type="password"
+            data-testid="password-input"
             className={`mb-2 w-full rounded bg-primary-1000 p-2 text-white outline-none ${
               errors.password
                 ? "border border-red-500 transition-all duration-500"
@@ -89,12 +92,14 @@ const LoginForm = () => {
           <button
             className="mb-4 rounded-md bg-secondary-100 py-2 text-white transition-all duration-300 hover:bg-secondary-500"
             type="submit"
+            data-testid="login-button"
           >
             Log in
           </button>
           <div className="text-sm">
             <span className="me-2 text-white">Don&apos;t have an account?</span>
             <Link
+              data-testid="register-link"
               className="cursor-pointer text-cyan-500 hover:underline"
               href={"/register"}
             >

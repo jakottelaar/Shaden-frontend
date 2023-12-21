@@ -44,7 +44,10 @@ const PendingFriendRequestListItem = ({
     <div>
       <Separator className="my-2 bg-stone-500" />
       {request && (
-        <div className="flex flex-row items-center justify-between space-x-5">
+        <div
+          className="flex flex-row items-center justify-between space-x-5"
+          data-testid="pending-friend-request-list-item"
+        >
           <div className="flex flex-row items-center space-x-5">
             <Avatar className="h-12 w-12">
               <AvatarFallback className="pointer-events-none bg-gradient-to-br from-purple-500 to-secondary-100 text-xl capitalize">
@@ -63,6 +66,7 @@ const PendingFriendRequestListItem = ({
           {request.requestType === "INCOMING" ? (
             <div className="flex flex-row space-x-4">
               <button
+                data-testid="accept-friend-request-button"
                 className="group flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300 hover:bg-neutral-800"
                 onClick={handleAcceptIncomingFriendRequest()}
               >

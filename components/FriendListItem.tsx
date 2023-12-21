@@ -10,7 +10,10 @@ const FriendListItem = ({ friend }: { friend: Friend }) => {
   return (
     <div>
       <Separator className="my-2 bg-stone-500" />
-      <div className="flex flex-row items-center justify-between">
+      <div
+        className="flex flex-row items-center justify-between"
+        data-testid="friend-list-item"
+      >
         <div className="flex flex-row items-center space-x-5">
           <Avatar className="h-12 w-12">
             <AvatarFallback className="pointer-events-none bg-gradient-to-br from-purple-500 to-secondary-100 text-xl capitalize">
