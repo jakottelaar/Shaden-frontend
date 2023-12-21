@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch",
+    "local-test": "jest --watchAll",
+    "workflow-test": "jest --forceExit --detectOpenHandles",
     "cypress:open": "cypress open"
   },
   "dependencies": {
