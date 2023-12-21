@@ -37,5 +37,9 @@ describe("template spec", () => {
     cy.get('[data-testid="login-button"]').click();
 
     cy.url().should("include", "/channels");
+
+    cy.get('[data-testid="settings-modal-button"]').click();
+
+    cy.get('[data-testid="logout-button"]').click();
   });
 });
