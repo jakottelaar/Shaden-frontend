@@ -41,6 +41,9 @@ const FriendsOverview = ({ selectedOption }: { selectedOption: string }) => {
           } else if (selectedOption === "All") {
             setFriendList(data as Friend[]);
             setAmountOfUsers((data as Friend[]).length);
+          } else if (selectedOption === "Online") {
+            setFriendList(data as Friend[]);
+            setAmountOfUsers((data as Friend[]).length);
           }
         } else {
           console.error("Invalid selected option");
