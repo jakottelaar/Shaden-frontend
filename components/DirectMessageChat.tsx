@@ -102,7 +102,7 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
         {messages &&
           messages.map((msg) => (
             <div key={msg.message_id}>
-              <div className="mb-2 flex flex-row items-center space-x-2 rounded-md p-1 duration-300 hover:bg-primary-500">
+              <div className="mb-2 flex flex-row items-center space-x-2 rounded-md px-1 py-2 duration-300 hover:bg-primary-500">
                 <Avatar className="h-12 w-12">
                   <AvatarFallback className="pointer-events-none bg-gradient-to-br from-purple-500 to-secondary-100 text-xl capitalize">
                     U
@@ -117,7 +117,9 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
                       {formatTimestamp(msg.created_date)}
                     </h2>
                   </div>
-                  <p className="font-light text-neutral-300">{msg.content}</p>
+                  <p className=" mt-2 rounded-bl-lg rounded-br-lg rounded-tr-lg bg-secondary-100 p-1 font-light text-white">
+                    {msg.content}
+                  </p>
                 </div>
               </div>
             </div>
