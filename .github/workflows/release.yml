@@ -30,7 +30,7 @@ jobs:
         run: npm install
 
       - name: Run Jest tests
-        run: npm workflow-test
+        run: npm run workflow-test
 
       - name: Build with Next.js
         run: npm run build
