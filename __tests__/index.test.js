@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, act } from '@testing-library/react'
 import LoginForm from "../components/LoginForm";
+import { AuthProvider, useAuth as mockUseAuth } from "../components/AuthProvider";
 import '@testing-library/jest-dom/jest-globals';
 
 jest.mock("next/navigation", () => ({
@@ -10,9 +11,22 @@ jest.mock("next/navigation", () => ({
     }
 }));
 
+jest.mock('../components/AuthProvider', () => ({
+    ...jest.requireActual('../components/AuthProvider'),
+    useAuth: jest.fn(),
+}));
+
 describe('LoginForm', () => {
     it('renders a login form', () => {
-        render(<LoginForm />)
+        mockUseAuth.mockReturnValue({
+        });
+
+        render(
+            <AuthProvider>
+                <LoginForm />
+            </AuthProvider>
+        );
+
 
         expect(screen.getByTestId('login-button')).toHaveTextContent('Log in');
         expect(screen.getByTestId("email-input")).toBeInTheDocument();
@@ -21,7 +35,12 @@ describe('LoginForm', () => {
     });
 
     it('Testing email and password input', async () => {
-        render(<LoginForm />);
+        render(
+            <AuthProvider>
+                <LoginForm />
+            </AuthProvider>
+        );
+
 
         await act(async () => {
             fireEvent.change(screen.getByTestId("email-input"), { target: { value: 'test@example.com' } });
@@ -33,7 +52,12 @@ describe('LoginForm', () => {
     });
 
     it('displays error border on invalid input', async () => {
-        render(<LoginForm />);
+        render(
+            <AuthProvider>
+                <LoginForm />
+            </AuthProvider>
+        );
+
         await act(async () => {
             fireEvent.change(screen.getByTestId('email-input'), { target: { value: 'invalid-email' } });
             fireEvent.change(screen.getByTestId('password-input'), { target: { value: '' } });
