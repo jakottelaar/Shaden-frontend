@@ -79,6 +79,8 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
   }, [channelId]);
 
   const sendMessage = () => {
+    if (message === "") return;
+
     const messageRequest: MessageRequest = {
       channel_id: channelId,
       sender_id: sender?.user_id,
