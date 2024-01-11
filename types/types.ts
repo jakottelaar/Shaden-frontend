@@ -32,6 +32,7 @@ export interface MessageResponse {
   content: string;
   created_date: string;
   last_modified_date: string;
+  deleted: boolean;
 }
 
 export interface UserProfile {

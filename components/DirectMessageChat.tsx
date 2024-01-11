@@ -42,11 +42,23 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
     };
 
     stompClient.connect({}, () => {
-      stompClient.subscribe(`/queue/${channelId}`, (message) => {
+      stompClient.subscribe(`/topic/${channelId}`, (message) => {
         const messageData: MessageResponse = JSON.parse(message.body);
-        setMessages((prevMessages) =>
-          prevMessages ? [...prevMessages, messageData] : [messageData],
-        );
+        console.log(messageData);
+
+        if (messageData.deleted) {
+          // Handle delete message
+          setMessages((prevMessages) =>
+            prevMessages.filter(
+              (msg) => msg.message_id !== messageData.message_id,
+            ),
+          );
+        } else {
+          //Handle regular messages
+          setMessages((prevMessages) =>
+            prevMessages ? [...prevMessages, messageData] : [messageData],
+          );
+        }
       });
     });
 
@@ -79,6 +91,8 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
   }, [channelId]);
 
   const sendMessage = () => {
+    if (message === "") return;
+
     const messageRequest: MessageRequest = {
       channel_id: channelId,
       sender_id: sender?.user_id,
@@ -96,6 +110,19 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
     }
   };
 
+  const deleteMessage = (messageId: number) => {
+    const deleteMessageRequest = {
+      message_id: messageId,
+      channel_id: channelId,
+    };
+
+    stompClient.send(
+      "/app/delete-message",
+      {},
+      JSON.stringify(deleteMessageRequest),
+    );
+  };
+
   return (
     <ScrollArea className="max-h-full flex-grow overflow-y-auto">
       <div className="mb-12">
@@ -108,18 +135,39 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
                     U
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
-                  <div className="flex flex-row items-center space-x-2">
-                    <h1 className="text-sm font-semibold text-white">
-                      {msg.sender_username}
-                    </h1>
-                    <h2 className="text-xs text-neutral-400">
-                      {formatTimestamp(msg.created_date)}
-                    </h2>
+                <div className="flex w-full flex-row items-center justify-between">
+                  <div className="flex flex-col">
+                    <div className="flex flex-row items-center space-x-2">
+                      <h1 className="text-sm font-semibold text-white">
+                        {msg.sender_username}
+                      </h1>
+                      <h2 className="text-xs text-neutral-400">
+                        {formatTimestamp(msg.created_date)}
+                      </h2>
+                    </div>
+                    <p className=" mt-2 rounded-bl-lg rounded-br-lg rounded-tr-lg bg-secondary-100 p-1 font-light text-white">
+                      {msg.content}
+                    </p>
                   </div>
-                  <p className=" mt-2 rounded-bl-lg rounded-br-lg rounded-tr-lg bg-secondary-100 p-1 font-light text-white">
-                    {msg.content}
-                  </p>
+                  <button
+                    className="group flex h-8 w-8 items-center justify-center rounded-full bg-neutral-700 transition-all duration-300"
+                    onClick={() => deleteMessage(msg.message_id)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="h-5 w-5 stroke-neutral-500 transition-all duration-300 group-hover:stroke-red-600"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
