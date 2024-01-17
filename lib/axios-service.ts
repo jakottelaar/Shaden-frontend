@@ -40,6 +40,9 @@ export const ApiInstance = (
 
           if (response.status === 200) {
             const accessToken = response.data.results.access_token;
+
+            console.log("Refreshed access token");
+
             updateToken(accessToken);
             api.defaults.headers.common["Authorization"] =
               "Bearer " + accessToken;
