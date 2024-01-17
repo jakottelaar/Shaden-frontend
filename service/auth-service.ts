@@ -13,6 +13,7 @@ export const login = async (email: string, password: string) => {
     );
 
     const accessToken = response.data.results.access_token;
+    console.log("accessToken", accessToken);
 
     return accessToken;
   } catch (error: any) {
