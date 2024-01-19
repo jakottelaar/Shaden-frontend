@@ -11,9 +11,8 @@ export const ApiInstance = (
 
   api.interceptors.request.use(
     (config) => {
-      if (accessToken) {
-        config.headers["Authorization"] = "Bearer " + accessToken;
-      }
+      config.headers["Authorization"] =
+        "Bearer " + localStorage.getItem("accessToken");
       return config;
     },
     (error) => {
@@ -43,7 +42,8 @@ export const ApiInstance = (
 
             console.log("Refreshed access token");
 
-            updateToken(accessToken);
+            localStorage.setItem("accessToken", accessToken);
+            // updateToken(accessToken);
             api.defaults.headers.common["Authorization"] =
               "Bearer " + accessToken;
             originalRequest.headers["Authorization"] = "Bearer " + accessToken;
