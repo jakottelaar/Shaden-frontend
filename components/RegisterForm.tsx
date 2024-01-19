@@ -46,7 +46,7 @@ const RegisterForm = () => {
     try {
       const response = await registerApi(username, email, password);
 
-      setToken(response);
+      localStorage.setItem("accessToken", response);
 
       router.push("/channels");
     } catch (error) {

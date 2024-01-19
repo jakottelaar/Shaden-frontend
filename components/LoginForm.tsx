@@ -44,6 +44,8 @@ const LoginForm = () => {
     try {
       const response = await login(email, password);
 
+      localStorage.setItem("accessToken", response);
+
       setToken(response);
 
       router.push("/channels");
