@@ -24,7 +24,7 @@ const DirectMessageChat = ({ channelId }: { channelId: number }) => {
 
   const socket = useMemo(
     () =>
-      new SockJS("http://localhost:8080/ws", {
+      new SockJS(`${process.env.API_BASE_URL}/ws`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
